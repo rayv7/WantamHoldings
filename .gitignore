@@ -1,0 +1,13 @@
+# Flutter/Dart build and tool directories
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Local text storage data (Ignore local test databases)
+src/backend/data/local_cache.json
+
+# Operating System files
+.DS_Store
+Thumbs.db
