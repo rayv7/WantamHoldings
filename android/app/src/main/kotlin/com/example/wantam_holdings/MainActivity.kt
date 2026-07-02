@@ -1,0 +1,5 @@
+package com.example.wantam_holdings
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
