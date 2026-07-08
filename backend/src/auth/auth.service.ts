@@ -84,6 +84,7 @@ export class AuthService {
       role: user.role.name,
     };
 
+      
     const accessToken = await this.jwtService.signAsync(payload);
 
     return {
