@@ -5,28 +5,26 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @ApiTags('Users')
-@ApiBearerAuth('JWT-auth')   // <- Apply to the whole controller
+@ApiBearerAuth('JWT-auth')
 @Controller('users')
 export class UsersController {
+
   @Get('profile')
-  @UseGuards(JwtGuard)
-  @ApiOperation({
-    summary: 'Get the authenticated user profile',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Returns the authenticated user.',
-  })
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(
+    'ADMIN',
+    'MANAGER',
+    'TELLER',
+    'CUSTOMER',
+    'AUDITOR',
+  )
   getProfile(@Request() req) {
     return req.user;
   }
