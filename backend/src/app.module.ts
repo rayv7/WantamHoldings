@@ -8,6 +8,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CustomerModule } from './customer/customer.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
@@ -19,14 +20,11 @@ import { CustomerModule } from './customer/customer.module';
     AuthModule,
     UsersModule,
     CustomerModule,
+    AccountModule,
   ],
 
-  controllers: [
-    AppController,
-  ],
+  controllers: [AppController],
 
-  providers: [
-    AppService,
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

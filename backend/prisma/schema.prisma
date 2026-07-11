@@ -56,57 +56,65 @@ model Role {
 }
 
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  password   String
+  id       String @id @default(cuid())
 
-  roleId     String
-  role       Role     @relation(fields: [roleId], references: [id])
+  email    String @unique
+  password String
 
-  customer   Customer?
+  roleId   String
+  role     Role @relation(fields: [roleId], references: [id])
+
+  customer Customer?
 
   notifications Notification[]
   auditLogs     AuditLog[]
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Customer {
-  id          String           @id @default(cuid())
+  id String @id @default(cuid())
 
-  firstName   String
-  lastName    String
+  firstName String
+  lastName  String
 
-  nationalId  String           @unique
-  phone       String           @unique
+  nationalId String @unique
+  phone      String @unique
 
-  status      CustomerStatus   @default(ACTIVE)
+  status CustomerStatus @default(ACTIVE)
 
-  userId      String           @unique
-  user        User             @relation(fields: [userId], references: [id])
+  userId String @unique
+  user   User @relation(fields: [userId], references: [id])
 
-  accounts    Account[]
+  accounts Account[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
-  id              String        @id @default(cuid())
+  id String @id @default(cuid())
 
-  accountNumber   String        @unique
+  /// Unique bank account number
+  accountNumber String @unique
 
-  balance         Decimal       @default(0)
+  /// Example: "John Doe Savings Account"
+  accountName String
 
-  accountType     AccountType
+  /// Savings, Current or Fixed Deposit
+  accountType AccountType
 
-  status          AccountStatus @default(ACTIVE)
+  /// Cached balance (Transaction records become the source of truth)
+  balance Decimal @default(0)
 
-  customerId      String
-  customer        Customer      @relation(fields: [customerId], references: [id])
+  /// ACTIVE, FROZEN or CLOSED
+  status AccountStatus @default(ACTIVE)
 
-  transactions    Transaction[]
+  customerId String
+  customer Customer @relation(fields: [customerId], references: [id])
+
+  transactions Transaction[]
 
   sentTransfers     Transfer[] @relation("Sender")
   receivedTransfers Transfer[] @relation("Receiver")
@@ -116,61 +124,60 @@ model Account {
 }
 
 model Transaction {
-  id          String            @id @default(cuid())
+  id String @id @default(cuid())
 
-  reference   String            @unique
+  reference String @unique
 
-  amount      Decimal
+  amount Decimal
 
-  type        TransactionType
+  type TransactionType
 
-  status      TransactionStatus @default(PENDING)
+  status TransactionStatus @default(PENDING)
 
-  accountId   String
-  account     Account           @relation(fields: [accountId], references: [id])
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
 
   createdAt DateTime @default(now())
 }
 
 model Transfer {
-  id                  String @id @default(cuid())
+  id String @id @default(cuid())
 
-  reference           String @unique
+  reference String @unique
 
-  amount              Decimal
+  amount Decimal
 
-  senderAccountId     String
-  receiverAccountId   String
+  senderAccountId   String
+  receiverAccountId String
 
-  senderAccount       Account @relation("Sender", fields: [senderAccountId], references: [id])
-  receiverAccount     Account @relation("Receiver", fields: [receiverAccountId], references: [id])
+  senderAccount   Account @relation("Sender", fields: [senderAccountId], references: [id])
+  receiverAccount Account @relation("Receiver", fields: [receiverAccountId], references: [id])
 
   createdAt DateTime @default(now())
 }
 
 model Notification {
-  id        String @id @default(cuid())
+  id String @id @default(cuid())
 
-  title     String
-  message   String
+  title   String
+  message String
 
-  isRead    Boolean @default(false)
+  isRead Boolean @default(false)
 
-  userId    String
-  user      User @relation(fields: [userId], references: [id])
+  userId String
+  user   User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
 }
 
 model AuditLog {
-  id          String @id @default(cuid())
+  id String @id @default(cuid())
 
   action      String
-
   description String
 
-  userId      String
-  user        User @relation(fields: [userId], references: [id])
+  userId String
+  user   User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
-} 
+}
