@@ -4,6 +4,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
@@ -25,7 +26,7 @@ export class UsersController {
     'CUSTOMER',
     'AUDITOR',
   )
-  getProfile(@Request() req) {
+  getProfile(@Request() req: ExpressRequest) {
     return req.user;
   }
 }

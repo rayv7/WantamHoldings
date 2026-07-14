@@ -1,4 +1,27 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateAccountDto } from './create-account.dto';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { AccountStatus } from '@prisma/client';
 
-export class UpdateAccountDto extends PartialType(CreateAccountDto) {}
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+
+export class UpdateAccountDto {
+  @ApiPropertyOptional({
+    example: 'John Doe Savings Account',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  accountName?: string;
+
+  @ApiPropertyOptional({
+    enum: AccountStatus,
+    example: AccountStatus.ACTIVE,
+  })
+  @IsOptional()
+  @IsEnum(AccountStatus)
+  status?: AccountStatus;
+} 

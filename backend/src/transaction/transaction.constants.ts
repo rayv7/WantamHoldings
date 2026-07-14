@@ -1,0 +1,7 @@
+export const TRANSACTION_REFERENCE_PREFIX = 'TXN';
+
+export const MIN_TRANSACTION_AMOUNT = 1;
+
+export const MAX_TRANSACTION_AMOUNT = 100000000;
+
+export const ACCOUNT_NUMBER_LENGTH = 12;
