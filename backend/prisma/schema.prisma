@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleType {
+  ADMIN
+  MANAGER
+  TELLER
+  CUSTOMER
+  AUDITOR
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum AccountType {
+  SAVINGS
+  CURRENT
+  FIXED
+}
+
+enum AccountStatus {
+  ACTIVE
+  FROZEN
+  CLOSED
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+model Role {
+  id        String   @id @default(cuid())
+  name      RoleType @unique
+
+  users     User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  password   String
+
+  roleId     String
+  role       Role     @relation(fields: [roleId], references: [id])
+
+  customer   Customer?
+
+  notifications Notification[]
+  auditLogs     AuditLog[]
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Customer {
+  id          String           @id @default(cuid())
+
+  firstName   String
+  lastName    String
+
+  nationalId  String           @unique
+  phone       String           @unique
+
+  status      CustomerStatus   @default(ACTIVE)
+
+  userId      String           @unique
+  user        User             @relation(fields: [userId], references: [id])
+
+  accounts    Account[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Account {
+  id              String        @id @default(cuid())
+
+  accountNumber   String        @unique
+
+  balance         Decimal       @default(0)
+
+  accountType     AccountType
+
+  status          AccountStatus @default(ACTIVE)
+
+  customerId      String
+  customer        Customer      @relation(fields: [customerId], references: [id])
+
+  transactions    Transaction[]
+
+  sentTransfers     Transfer[] @relation("Sender")
+  receivedTransfers Transfer[] @relation("Receiver")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Transaction {
+  id          String            @id @default(cuid())
+
+  reference   String            @unique
+
+  amount      Decimal
+
+  type        TransactionType
+
+  status      TransactionStatus @default(PENDING)
+
+  accountId   String
+  account     Account           @relation(fields: [accountId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Transfer {
+  id                  String @id @default(cuid())
+
+  reference           String @unique
+
+  amount              Decimal
+
+  senderAccountId     String
+  receiverAccountId   String
+
+  senderAccount       Account @relation("Sender", fields: [senderAccountId], references: [id])
+  receiverAccount     Account @relation("Receiver", fields: [receiverAccountId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String @id @default(cuid())
+
+  title     String
+  message   String
+
+  isRead    Boolean @default(false)
+
+  userId    String
+  user      User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id          String @id @default(cuid())
+
+  action      String
+
+  description String
+
+  userId      String
+  user        User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+} 
