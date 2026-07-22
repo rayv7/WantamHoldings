@@ -1,0 +1,1 @@
+ C:\\Users\\G\\Desktop\\wantamholdings\\wantamHoldings\\frontend\\.dart_tool\\flutter_build\\b9927519303b82db53a23d997257c9b9\\dart_build_result.json: 
