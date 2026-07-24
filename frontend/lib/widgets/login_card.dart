@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/api_service.dart';
+import '../screens/dashboard_screen.dart';
 
 class LoginCard extends StatefulWidget {
   const LoginCard({super.key});
@@ -12,7 +14,10 @@ class LoginCard extends StatefulWidget {
 
 class _LoginCardState extends State<LoginCard> {
   bool _obscurePassword = true;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
+  final ApiService _apiService = ApiService();
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -80,6 +85,7 @@ class _LoginCardState extends State<LoginCard> {
                     const SizedBox(height: 24),
 
                     TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         hintText: "Username or Email",
 
@@ -116,6 +122,7 @@ class _LoginCardState extends State<LoginCard> {
                     const SizedBox(height: 18),
 
                     TextField(
+                      controller: _passwordController,
                       obscureText: _obscurePassword,
 
                       decoration: InputDecoration(
@@ -203,7 +210,39 @@ class _LoginCardState extends State<LoginCard> {
                           ],
                         ),
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () async {
+                            try {
+                              final result = await _apiService.login(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text,
+                              );
+
+                              if (!context.mounted) return;
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Login successful"),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DashboardScreen(),
+                                ),
+                              );
+                            } catch (e) {
+                              if (!context.mounted) return;
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.toString()),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          },
 
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
