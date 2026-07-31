@@ -5,53 +5,59 @@ class LeftPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 60,
-          right: 40,
-          top: 70,
-          bottom: 60,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Spacer(),
+    final width = MediaQuery.of(context).size.width;
 
-            const Text(
-              "Welcome to\nWantam Holdings",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                height: 1.08,
-              ),
+    return Padding(
+      padding: EdgeInsets.only(
+        left: width > 1400 ? 90 : 60,
+        right: 40,
+        top: 70,
+        bottom: 60,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Spacer(),
+
+          Text(
+            "Welcome to\nWantam Holdings",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: width > 1400 ? 56 : 50,
+              fontWeight: FontWeight.bold,
+              height: 1.08,
             ),
+          ),
 
-            const SizedBox(height: 22),
+          const SizedBox(height: 22),
 
-            const Text(
-              "Login to access your account",
-              style: TextStyle(color: Colors.white70, fontSize: 24),
+          Text(
+            "Login to access your account",
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: width > 1400 ? 26 : 24,
             ),
+          ),
 
-            const SizedBox(height: 35),
+          const SizedBox(height: 35),
 
-            const Row(
-              children: [
-                Icon(Icons.shield_outlined, color: Colors.white, size: 22),
-                SizedBox(width: 10),
-                Text(
+          const Row(
+            children: [
+              Icon(Icons.shield_outlined, color: Colors.white, size: 22),
+
+              SizedBox(width: 10),
+
+              Expanded(
+                child: Text(
                   "Secure. Reliable. Growth-focused.",
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
 
-            const SizedBox(height: 35),
-          ],
-        ),
+          const SizedBox(height: 35),
+        ],
       ),
     );
   }

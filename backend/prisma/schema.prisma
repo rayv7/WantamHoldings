@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//////////////////////////////////////////////////////
+// ENUMS
+//////////////////////////////////////////////////////
+
 enum RoleType {
   ADMIN
   MANAGER
@@ -37,140 +41,280 @@ enum TransactionType {
   DEPOSIT
   WITHDRAWAL
   TRANSFER
+  REVERSAL
+  INTEREST
+  CHARGE
 }
 
 enum TransactionStatus {
   PENDING
   COMPLETED
   FAILED
+  REVERSED
 }
+
+enum Currency {
+  KES
+}
+
+//////////////////////////////////////////////////////
+// ROLE
+//////////////////////////////////////////////////////
 
 model Role {
-  id        String   @id @default(cuid())
-  name      RoleType @unique
+  id   String   @id @default(cuid())
+  name RoleType @unique
 
-  users     User[]
+  users User[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([name])
 }
+
+//////////////////////////////////////////////////////
+// USER
+//////////////////////////////////////////////////////
 
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  password   String
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
 
-  roleId     String
-  role       Role     @relation(fields: [roleId], references: [id])
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id])
 
-  customer   Customer?
+  // Customer profile (staff users will have this as null)
+  customer Customer?
 
+  // Transactions performed by this user
+  performedTransactions Transaction[] @relation("PerformedTransactions")
+
+  // Notifications
   notifications Notification[]
-  auditLogs     AuditLog[]
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
+  // Audit trail
+  auditLogs AuditLog[]
 
-model Customer {
-  id          String           @id @default(cuid())
-
-  firstName   String
-  lastName    String
-
-  nationalId  String           @unique
-  phone       String           @unique
-
-  status      CustomerStatus   @default(ACTIVE)
-
-  userId      String           @unique
-  user        User             @relation(fields: [userId], references: [id])
-
-  accounts    Account[]
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Account {
-  id              String        @id @default(cuid())
-
-  accountNumber   String        @unique
-
-  balance         Decimal       @default(0)
-
-  accountType     AccountType
-
-  status          AccountStatus @default(ACTIVE)
-
-  customerId      String
-  customer        Customer      @relation(fields: [customerId], references: [id])
-
-  transactions    Transaction[]
-
-  sentTransfers     Transfer[] @relation("Sender")
-  receivedTransfers Transfer[] @relation("Receiver")
+  deletedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([roleId])
 }
+
+//////////////////////////////////////////////////////
+// CUSTOMER
+//////////////////////////////////////////////////////
+
+model Customer {
+  id String @id @default(cuid())
+
+  firstName  String
+  middleName String?
+  lastName   String
+
+  nationalId String @unique
+  phone      String @unique
+
+  status CustomerStatus @default(ACTIVE)
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Customer owns multiple accounts
+  accounts Account[]
+
+  deletedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([nationalId])
+  @@index([phone])
+  @@index([status])
+  @@index([lastName])
+  @@index([firstName])
+}
+
+//////////////////////////////////////////////////////
+// ACCOUNT
+//////////////////////////////////////////////////////
+
+model Account {
+  id String @id @default(cuid())
+
+  /// Unique account number
+  accountNumber String @unique
+
+  /// Example: John Doe Savings Account
+  accountName String
+
+  accountType AccountType
+
+  /// Cached account balance
+  balance Decimal @default(0) @db.Decimal(18, 2)
+
+  /// Bank currency
+  currency Currency @default(KES)
+
+  status AccountStatus @default(ACTIVE)
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  /// Transactions on this account
+  transactions Transaction[]
+
+  /// Transfers sent
+  sentTransfers Transfer[] @relation("SenderAccount")
+
+  /// Transfers received
+  receivedTransfers Transfer[] @relation("ReceiverAccount")
+
+  openedAt DateTime @default(now())
+
+  deletedAt DateTime?
+
+  version Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([customerId])
+  @@index([accountNumber])
+  @@index([accountType])
+  @@index([status])
+}
+
+//////////////////////////////////////////////////////
+// TRANSACTION
+//////////////////////////////////////////////////////
 
 model Transaction {
-  id          String            @id @default(cuid())
+  id String @id @default(cuid())
 
-  reference   String            @unique
+  /// Banking reference
+  reference String @unique
 
-  amount      Decimal
+  amount Decimal @db.Decimal(18, 2)
 
-  type        TransactionType
+  type TransactionType
 
-  status      TransactionStatus @default(PENDING)
+  status TransactionStatus @default(COMPLETED)
 
-  accountId   String
-  account     Account           @relation(fields: [accountId], references: [id])
+  /// Transaction narration
+  description String?
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  /// User who performed this transaction
+  performedByUserId String?
+  performedByUser   User?   @relation("PerformedTransactions", fields: [performedByUserId], references: [id])
+
+  /// Optional transfer links
+  debitTransfer Transfer? @relation("DebitTransaction")
+
+  creditTransfer Transfer? @relation("CreditTransaction")
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([reference])
+  @@index([accountId])
+  @@index([type])
+  @@index([status])
+  @@index([performedByUserId])
+  @@index([createdAt])
 }
+
+//////////////////////////////////////////////////////
+// TRANSFER
+//////////////////////////////////////////////////////
 
 model Transfer {
-  id                  String @id @default(cuid())
+  id String @id @default(cuid())
 
-  reference           String @unique
+  reference String @unique
 
-  amount              Decimal
+  amount Decimal @db.Decimal(18, 2)
 
-  senderAccountId     String
-  receiverAccountId   String
+  remarks String?
 
-  senderAccount       Account @relation("Sender", fields: [senderAccountId], references: [id])
-  receiverAccount     Account @relation("Receiver", fields: [receiverAccountId], references: [id])
+  senderAccountId   String
+  receiverAccountId String
+
+  senderAccount Account @relation("SenderAccount", fields: [senderAccountId], references: [id])
+
+  receiverAccount Account @relation("ReceiverAccount", fields: [receiverAccountId], references: [id])
+
+  debitTransactionId String?      @unique
+  debitTransaction   Transaction? @relation("DebitTransaction", fields: [debitTransactionId], references: [id])
+
+  creditTransactionId String?      @unique
+  creditTransaction   Transaction? @relation("CreditTransaction", fields: [creditTransactionId], references: [id])
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([reference])
+  @@index([senderAccountId])
+  @@index([receiverAccountId])
+  @@index([createdAt])
 }
+
+//////////////////////////////////////////////////////
+// NOTIFICATION
+//////////////////////////////////////////////////////
 
 model Notification {
-  id        String @id @default(cuid())
+  id String @id @default(cuid())
 
-  title     String
-  message   String
+  title String
 
-  isRead    Boolean @default(false)
+  message String
 
-  userId    String
-  user      User @relation(fields: [userId], references: [id])
+  isRead Boolean @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
 }
 
+//////////////////////////////////////////////////////
+// AUDIT LOG
+//////////////////////////////////////////////////////
+
 model AuditLog {
-  id          String @id @default(cuid())
+  id String @id @default(cuid())
 
-  action      String
+  /// Action performed
+  action String
 
+  /// Detailed description
   description String
 
-  userId      String
-  user        User @relation(fields: [userId], references: [id])
+  /// User responsible
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  /// Optional metadata
+  ipAddress String?
+  userAgent String?
 
   createdAt DateTime @default(now())
-} 
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
