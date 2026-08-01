@@ -92,7 +92,7 @@ class DashboardHomeView extends StatelessWidget {
     final transactions = [
       const TransactionModel(
         type: 'Transfer',
-        merchant: 'Nancy Wanjiru',
+        merchant: 'Ann Wanjiru',
         date: '30 Jul',
         time: '09:15',
         amount: '-KES 7,500',
@@ -103,7 +103,7 @@ class DashboardHomeView extends StatelessWidget {
         merchant: 'Salary',
         date: '29 Jul',
         time: '08:00',
-        amount: '+KES 55,000',
+        amount: '+KES 155,000',
         status: 'Completed',
       ),
       const TransactionModel(
@@ -127,11 +127,6 @@ class DashboardHomeView extends StatelessWidget {
               fontSize: 22,
               fontWeight: FontWeight.w700,
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Your finances are looking healthy today.',
-            style: GoogleFonts.poppins(color: Colors.grey[700]),
           ),
           const SizedBox(height: 16),
           GestureDetector(
