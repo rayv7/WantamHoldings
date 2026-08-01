@@ -928,10 +928,7 @@ class _ProfileContent extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Not Available',
-                          style: theme.textTheme.headlineSmall,
-                        ),
+                        Text('Profile', style: theme.textTheme.headlineSmall),
                         const SizedBox(height: 4),
                         Text(user.email, style: theme.textTheme.bodyLarge),
                         const SizedBox(height: 12),
@@ -975,11 +972,11 @@ class _ProfileContent extends ConsumerWidget {
                 icon: Icons.person_outline,
                 width: _cardWidth(constraints),
                 rows: [
-                  _ProfileRow('Full Name', 'Not Available'),
+                  _ProfileRow('Full Name', '*******'),
                   _ProfileRow('Email', user.email),
-                  _ProfileRow('Phone Number', 'Not Available'),
-                  _ProfileRow('National ID', 'Not Available'),
-                  _ProfileRow('Address', 'Not Available'),
+                  _ProfileRow('Phone Number', '07*****'),
+                  _ProfileRow('National ID', '*******'),
+                  _ProfileRow('Address', '*******'),
                 ],
               ),
               _ProfileCard(
@@ -987,14 +984,14 @@ class _ProfileContent extends ConsumerWidget {
                 icon: Icons.business_center_outlined,
                 width: _cardWidth(constraints),
                 rows: [
-                  _ProfileRow('Department', 'Not Available'),
-                  _ProfileRow('Branch', 'Not Available'),
+                  _ProfileRow('Department', '*******'),
+                  _ProfileRow('Branch', '*******'),
                   _ProfileRow(
                     'Role',
                     user.role.isEmpty ? 'Not Available' : user.role,
                   ),
-                  _ProfileRow('Employment Status', 'Not Available'),
-                  _ProfileRow('Date Joined', 'Not Available'),
+                  _ProfileRow('Employment Status', '*******'),
+                  _ProfileRow('Date Joined', '*******'),
                 ],
               ),
               _ProfileCard(
@@ -1002,10 +999,10 @@ class _ProfileContent extends ConsumerWidget {
                 icon: Icons.account_balance_outlined,
                 width: _cardWidth(constraints),
                 rows: const [
-                  _ProfileRow('Account Number', 'Not Available'),
-                  _ProfileRow('Account Type', 'Not Available'),
-                  _ProfileRow('Currency', 'Not Available'),
-                  _ProfileRow('Branch', 'Not Available'),
+                  _ProfileRow('Account Number', '*******'),
+                  _ProfileRow('Account Type', '*******'),
+                  _ProfileRow('Currency', 'ksh *******'),
+                  _ProfileRow('Branch', '*******'),
                 ],
               ),
               _ProfileCard(
@@ -1013,9 +1010,9 @@ class _ProfileContent extends ConsumerWidget {
                 icon: Icons.security_outlined,
                 width: _cardWidth(constraints),
                 rows: const [
-                  _ProfileRow('Password Status', 'Not Available'),
-                  _ProfileRow('Two-Factor Authentication', 'Not Available'),
-                  _ProfileRow('Last Login Date', 'Not Available'),
+                  _ProfileRow('Password Status', 'Available'),
+                  _ProfileRow('Two-Factor Authentication', 'Available'),
+                  _ProfileRow('Last Login Date', '__.__.__.____'),
                   _ProfileRow('Active Session', 'Authenticated'),
                 ],
               ),
