@@ -1,17 +1,13 @@
-2026/07/31-19:11:31.328 4964 Reusing MANIFEST C:\Users\G\AppData\Local\Temp\flutter_tools.61b668f1\flutter_tools_chrome_device.eaad9ff8\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
-2026/07/31-19:11:31.349 4964 Recovering log #8
-2026/07/31-19:11:31.353 4964 Reusing old log C:\Users\G\AppData\Local\Temp\flutter_tools.61b668f1\flutter_tools_chrome_device.eaad9ff8\Default\EdgeCoupons/coupons_data.db/000008.log 
-2026/07/31-19:11:31.354 4964 Delete type=0 #3
-2026/07/31-19:11:31.354 4964 Delete type=0 #4
-2026/07/31-19:11:31.354 4964 Delete type=0 #7
-2026/07/31-19:11:46.283 8afc Level-0 table #12: started
-2026/07/31-19:11:46.288 8afc Level-0 table #12: 683332 bytes OK
-2026/07/31-19:11:46.290 8afc Delete type=0 #8
-2026/07/31-19:11:46.290 2ce0 Compacting 4@0 + 0@1 files
-2026/07/31-19:11:46.294 2ce0 Generated table #13@0: 1 keys, 683112 bytes
-2026/07/31-19:11:46.294 2ce0 Compacted 4@0 + 0@1 files => 683112 bytes
-2026/07/31-19:11:46.295 2ce0 compacted to: files[ 0 1 0 0 0 0 0 ]
-2026/07/31-19:11:46.296 2ce0 Delete type=2 #3
-2026/07/31-19:11:46.296 2ce0 Delete type=2 #4
-2026/07/31-19:11:46.296 2ce0 Delete type=2 #9
-2026/07/31-19:11:46.296 2ce0 Delete type=2 #12
+2026/07/31-19:54:45.560 3034 Reusing MANIFEST C:\Users\G\AppData\Local\Temp\flutter_tools.3a84c86e\flutter_tools_chrome_device.ff015f67\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/07/31-19:54:45.563 3034 Recovering log #11
+2026/07/31-19:54:45.563 3034 Reusing old log C:\Users\G\AppData\Local\Temp\flutter_tools.3a84c86e\flutter_tools_chrome_device.ff015f67\Default\EdgeCoupons/coupons_data.db/000011.log 
+2026/07/31-19:54:45.564 3034 Delete type=2 #3
+2026/07/31-19:54:45.564 3034 Delete type=0 #3
+2026/07/31-19:54:45.564 3034 Delete type=2 #4
+2026/07/31-19:54:45.564 3034 Delete type=0 #4
+2026/07/31-19:54:45.564 3034 Delete type=0 #7
+2026/07/31-19:54:45.565 3034 Delete type=0 #8
+2026/07/31-19:54:45.565 3034 Delete type=2 #9
+2026/07/31-19:55:04.973 3bc8 Level-0 table #16: started
+2026/07/31-19:55:04.976 3bc8 Level-0 table #16: 683332 bytes OK
+2026/07/31-19:55:04.978 3bc8 Delete type=0 #11

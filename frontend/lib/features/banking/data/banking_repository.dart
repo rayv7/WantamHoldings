@@ -15,6 +15,8 @@ class BankingRepository {
       Map<String, dynamic>.from(await api.post('/auth/register', data: data));
   Future<Map<String, dynamic>> profile() async =>
       Map<String, dynamic>.from(await api.get('/users/profile'));
+  Future<Map<String, dynamic>> updateProfile(Map<String, String> data) async =>
+      Map<String, dynamic>.from(await api.patch('/users/profile', data: data));
   Future<dynamic> customers({String? search}) => api.get(
     '/customers',
     query: {
