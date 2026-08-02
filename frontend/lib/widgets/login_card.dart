@@ -311,7 +311,7 @@ class _LoginCardState extends State<LoginCard> {
                       ),
 
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () => Routes.pushToRegistration(context),
 
                         child: Text(
                           "Sign Up",

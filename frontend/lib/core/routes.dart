@@ -6,6 +6,7 @@ import '../screens/deposit_screen.dart';
 import '../screens/loan_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/profile_screen.dart';
+import '../screens/registration_screen.dart';
 import '../screens/transaction_history_screen.dart';
 import '../screens/transfer_screen.dart';
 import '../screens/withdrawal_screen.dart';
@@ -17,9 +18,6 @@ import '../screens/withdrawal_screen.dart';
 class Routes {
   Routes._();
 
-  // ---------------------------------------------------------------------------
-  // Route names
-  // ---------------------------------------------------------------------------
   static const String login = '/login';
   static const String dashboard = '/dashboard';
   static const String account = '/account';
@@ -29,10 +27,10 @@ class Routes {
   static const String transactions = '/transactions';
   static const String loans = '/loans';
   static const String profile = '/profile';
+  static const String registration = '/registration';
 
-  // ---------------------------------------------------------------------------
   // Route generator – wired into [MaterialApp.onGenerateRoute]
-  // ---------------------------------------------------------------------------
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case login:
@@ -55,18 +53,17 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const LoanScreen());
       case profile:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
+      case registration:
+        return MaterialPageRoute(
+          builder: (_) => const RegistrationScreen(),
+        );
       default:
         return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(child: Text('Route not found')),
-          ),
+          builder: (_) =>
+              const Scaffold(body: Center(child: Text('Route not found'))),
         );
     }
   }
-
-  // ---------------------------------------------------------------------------
-  // Convenience push helpers
-  // ---------------------------------------------------------------------------
 
   /// Replaces the entire stack with the Dashboard (used after login).
   static void pushToDashboard(BuildContext context) {
@@ -95,5 +92,9 @@ class Routes {
 
   static void pushToLoans(BuildContext context) {
     Navigator.pushNamed(context, loans);
+  }
+
+  static void pushToRegistration(BuildContext context) {
+    Navigator.pushNamed(context, registration);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/routes.dart';
+import '../core/user_store.dart';
 import '../models/transaction.dart';
 import '../widgets/account_card.dart';
 import '../widgets/quick_action_button.dart';
@@ -119,7 +120,7 @@ class DashboardHomeView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Good Morning, Brian',
+            'Good Morning, ${UserStore.firstName}',
             style: GoogleFonts.poppins(
               fontSize: 22,
               fontWeight: FontWeight.w700,
