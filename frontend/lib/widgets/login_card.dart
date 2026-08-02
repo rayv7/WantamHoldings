@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../screens/dashboard_screen.dart';
+import '../core/routes.dart';
 
 class LoginCard extends StatefulWidget {
   const LoginCard({super.key});
@@ -220,12 +220,7 @@ class _LoginCardState extends State<LoginCard> {
 
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DashboardScreen(),
-                            ),
-                          );
+                          Routes.pushToDashboard(context);
                         },
 
                         style: ElevatedButton.styleFrom(

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../core/routes.dart';
 import '../models/account.dart';
 import '../widgets/quick_action_button.dart';
-import 'deposit_screen.dart';
-import 'transfer_screen.dart';
-import 'withdrawal_screen.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -125,32 +123,17 @@ class _AccountScreenState extends State<AccountScreen> {
                     (
                       Icons.arrow_downward,
                       'Deposit',
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const DepositScreen(),
-                        ),
-                      ),
+                      () => Routes.pushToDeposit(context),
                     ),
                     (
                       Icons.arrow_upward,
                       'Withdraw',
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const WithdrawalScreen(),
-                        ),
-                      ),
+                      () => Routes.pushToWithdrawal(context),
                     ),
                     (
                       Icons.swap_horiz,
                       'Transfer',
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const TransferScreen(),
-                        ),
-                      ),
+                      () => Routes.pushToTransfer(context),
                     ),
                   ];
 

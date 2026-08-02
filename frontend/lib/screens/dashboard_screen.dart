@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../core/routes.dart';
 import '../models/transaction.dart';
 import '../widgets/account_card.dart';
 import '../widgets/quick_action_button.dart';
 import '../widgets/transaction_tile.dart';
-import 'account_screen.dart';
-import 'deposit_screen.dart';
 import 'loan_screen.dart';
 import 'profile_screen.dart';
 import 'transaction_history_screen.dart';
-import 'transfer_screen.dart';
-import 'withdrawal_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -130,10 +127,7 @@ class DashboardHomeView extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AccountScreen()),
-            ),
+            onTap: () => Routes.pushToAccount(context),
             child: const AccountCard(
               balance: '240,000',
               accountNumber: '****6789',
@@ -153,39 +147,37 @@ class DashboardHomeView extends StatelessWidget {
                     Icons.account_balance_wallet_outlined,
                     'Account',
                     const Color(0xFF0A4D8C),
-                    MaterialPageRoute(builder: (_) => const AccountScreen()),
+                    () => Routes.pushToAccount(context),
                   ),
                   (
                     Icons.arrow_downward,
                     'Deposit',
                     const Color(0xFF1F8A5C),
-                    MaterialPageRoute(builder: (_) => const DepositScreen()),
+                    () => Routes.pushToDeposit(context),
                   ),
                   (
                     Icons.arrow_upward,
                     'Withdraw',
                     const Color(0xFFB5551F),
-                    MaterialPageRoute(builder: (_) => const WithdrawalScreen()),
+                    () => Routes.pushToWithdrawal(context),
                   ),
                   (
                     Icons.swap_horiz,
                     'Transfer',
                     const Color(0xFF7B61FF),
-                    MaterialPageRoute(builder: (_) => const TransferScreen()),
+                    () => Routes.pushToTransfer(context),
                   ),
                   (
                     Icons.receipt_long,
                     'History',
                     const Color(0xFF0F766E),
-                    MaterialPageRoute(
-                      builder: (_) => const TransactionHistoryScreen(),
-                    ),
+                    () => Routes.pushToTransactions(context),
                   ),
                   (
                     Icons.request_quote_outlined,
                     'Loans',
                     const Color(0xFF7C3AED),
-                    MaterialPageRoute(builder: (_) => const LoanScreen()),
+                    () => Routes.pushToLoans(context),
                   ),
                 ];
 
@@ -198,7 +190,7 @@ class DashboardHomeView extends StatelessWidget {
                     label: action.$2,
                     compact: true,
                     color: action.$3,
-                    onTap: () => Navigator.push(context, action.$4),
+                    onTap: action.$4,
                   ),
                 );
               },
@@ -216,12 +208,7 @@ class DashboardHomeView extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionHistoryScreen(),
-                  ),
-                ),
+                onPressed: () => Routes.pushToTransactions(context),
                 child: const Text('View All'),
               ),
             ],
