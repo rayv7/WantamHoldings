@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../core/user_store.dart';
 import '../models/loan.dart';
 import '../widgets/active_loan_card.dart';
 import '../widgets/eligibility_card.dart';
@@ -10,9 +11,14 @@ class LoanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final maxLoan = (UserStore.balance * 3).toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      (m) => '${m[1]},',
+    );
+
     final loanData = LoanModel(
-      eligibilityStatus: 'Eligible',
-      maxLoanAmount: '350,000',
+      eligibilityStatus: UserStore.balance > 0 ? 'Eligible' : 'Not Eligible',
+      maxLoanAmount: maxLoan,
       interestRate: '13%',
       maxRepaymentPeriod: '36 Months',
       activeLoan: const ActiveLoan(

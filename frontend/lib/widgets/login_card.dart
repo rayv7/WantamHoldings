@@ -241,18 +241,12 @@ class _LoginCardState extends State<LoginCard> {
                               );
                               if (result == true) {
                                 if (!context.mounted) return;
-                                UserStore.name = account.customerName;
-                                UserStore.email = account.email;
-                                UserStore.phone = account.phone;
-                                UserStore.branch = account.branchName;
+                                _fillUserStore(account);
                                 Routes.pushToDashboard(context);
                               }
                             } else if (AdminStore.verifyPassword(
                                 account.phone, password)) {
-                              UserStore.name = account.customerName;
-                              UserStore.email = account.email;
-                              UserStore.phone = account.phone;
-                              UserStore.branch = account.branchName;
+                              _fillUserStore(account);
                               Routes.pushToDashboard(context);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -381,6 +375,19 @@ class _LoginCardState extends State<LoginCard> {
         ),
       ),
     );
+  }
+
+  void _fillUserStore(AdminAccount account) {
+    UserStore.name = account.customerName;
+    UserStore.email = account.email;
+    UserStore.phone = account.phone;
+    UserStore.branch = account.branchName;
+    UserStore.accountNumber = account.accountNumber;
+    UserStore.accountType = account.accountType;
+    UserStore.balance = account.balance;
+    UserStore.accountStatus = account.status;
+    UserStore.openedOn = account.openedOn;
+    UserStore.save();
   }
 
   @override

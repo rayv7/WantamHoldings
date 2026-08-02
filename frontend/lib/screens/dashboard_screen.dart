@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/routes.dart';
 import '../core/user_store.dart';
+import '../core/admin_store.dart';
 import '../models/transaction.dart';
 import '../widgets/account_card.dart';
 import '../widgets/quick_action_button.dart';
@@ -20,12 +21,20 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = const [
-    DashboardHomeView(),
-    TransactionHistoryScreen(),
-    LoanScreen(),
-    ProfileScreen(),
-  ];
+  Widget _buildScreen() {
+    switch (_selectedIndex) {
+      case 0:
+        return const DashboardHomeView();
+      case 1:
+        return const TransactionHistoryScreen();
+      case 2:
+        return const LoanScreen();
+      case 3:
+        return const ProfileScreen();
+      default:
+        return const DashboardHomeView();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      body: _screens[_selectedIndex],
+      body: _buildScreen(),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         backgroundColor: const Color(0xFFE3EEF1),
@@ -87,32 +96,21 @@ class DashboardHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transactions = [
-      const TransactionModel(
-        type: 'Transfer',
-        merchant: 'Ann Wanjiru',
-        date: '30 Jul',
-        time: '09:15',
-        amount: '-KES 7,500',
-        status: 'Completed',
-      ),
-      const TransactionModel(
-        type: 'Deposit',
-        merchant: 'Salary',
-        date: '29 Jul',
-        time: '08:00',
-        amount: '+KES 155,000',
-        status: 'Completed',
-      ),
-      const TransactionModel(
-        type: 'Withdrawal',
-        merchant: 'ATM',
-        date: '28 Jul',
-        time: '18:30',
-        amount: '-KES 3,000',
-        status: 'Completed',
-      ),
-    ];
+    final userTxns = AdminStore.transactions
+        .where((t) => t.accountNumber == UserStore.accountNumber)
+        .take(3)
+        .toList();
+    final recentTxns = userTxns.map((t) {
+      final sign = t.type == 'Deposit' ? '+' : '-';
+      return TransactionModel(
+        type: t.type,
+        merchant: t.customerName,
+        date: t.date,
+        time: t.time,
+        amount: '$sign${t.formattedAmount}',
+        status: t.status,
+      );
+    }).toList();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -129,9 +127,9 @@ class DashboardHomeView extends StatelessWidget {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () => Routes.pushToAccount(context),
-            child: const AccountCard(
-              balance: '240,000',
-              accountNumber: '****6789',
+            child: AccountCard(
+              balance: UserStore.formattedBalance.replaceAll('KES ', ''),
+              accountNumber: UserStore.maskedAccountNumber,
             ),
           ),
           const SizedBox(height: 20),
@@ -215,7 +213,7 @@ class DashboardHomeView extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          ...transactions
+          ...recentTxns
               .map((transaction) => TransactionTile(transaction: transaction))
               .toList(),
         ],

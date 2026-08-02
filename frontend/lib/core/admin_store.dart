@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminAccount {
@@ -64,6 +65,14 @@ class AdminTransaction {
     required this.time,
     this.status = 'Completed',
   });
+
+  String get formattedAmount {
+    final formatted = amount.toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      (m) => '${m[1]},',
+    );
+    return 'KES $formatted';
+  }
 }
 
 class SystemMessage {
@@ -284,23 +293,17 @@ class AdminStore {
 
   static Future<void> savePasswords() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('admin_passwords', _passwords.toString());
+    await prefs.setString('admin_passwords', jsonEncode(_passwords));
   }
 
   static Future<void> loadPasswords() async {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getString('admin_passwords');
     if (stored != null && stored.isNotEmpty) {
+      final decoded = jsonDecode(stored) as Map<String, dynamic>;
       _passwords.clear();
-      final entries = stored
-          .replaceAll('{', '')
-          .replaceAll('}', '')
-          .split(', ');
-      for (final entry in entries) {
-        final parts = entry.split(': ');
-        if (parts.length == 2) {
-          _passwords[parts[0].trim()] = parts[1].trim();
-        }
+      for (final entry in decoded.entries) {
+        _passwords[entry.key] = entry.value.toString();
       }
     }
   }

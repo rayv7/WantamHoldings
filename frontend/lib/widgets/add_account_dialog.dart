@@ -131,6 +131,11 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
                         balance: double.tryParse(_depositController.text) ?? 0,
                       );
                       AdminStore.addAccount(account);
+                      AdminStore.setPassword(
+                        _phoneController.text.trim(),
+                        '1234',
+                      );
+                      AdminStore.savePasswords();
                       Navigator.pop(context, true);
                     },
                     style: ElevatedButton.styleFrom(

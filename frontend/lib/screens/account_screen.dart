@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/routes.dart';
-import '../models/account.dart';
+import '../core/user_store.dart';
 import '../widgets/quick_action_button.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -16,20 +16,8 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final account = AccountModel(
-      customerName: 'Brian Ochieng',
-      accountNumber: '0123456789',
-      accountType: 'Savings Account',
-      branchName: 'Westlands Branch',
-      availableBalance: 'KES 240,000',
-      currentBalance: 'KES 240,000',
-      status: 'Active',
-      openedOn: '14 Jan 2022',
-    );
-
-    final balanceText = _showBalance ? account.availableBalance : 'KES •••••';
-    final currentBalanceText = _showBalance
-        ? account.currentBalance
+    final balanceText = _showBalance
+        ? UserStore.formattedBalance
         : 'KES •••••';
 
     return Scaffold(
@@ -61,14 +49,14 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               child: Column(
                 children: [
-                  _infoRow('Customer Name', account.customerName),
-                  _infoRow('Account Number', account.accountNumber),
-                  _infoRow('Account Type', account.accountType),
-                  _infoRow('Branch Name', account.branchName),
+                  _infoRow('Customer Name', UserStore.name),
+                  _infoRow('Account Number', UserStore.accountNumber),
+                  _infoRow('Account Type', UserStore.accountType),
+                  _infoRow('Branch Name', UserStore.branch),
                   _infoRow('Available Balance', balanceText),
-                  _infoRow('Current Balance', currentBalanceText),
-                  _infoRow('Account Status', account.status),
-                  _infoRow('Date Opened', account.openedOn),
+                  _infoRow('Current Balance', balanceText),
+                  _infoRow('Account Status', UserStore.accountStatus),
+                  _infoRow('Date Opened', UserStore.openedOn),
                   const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerRight,

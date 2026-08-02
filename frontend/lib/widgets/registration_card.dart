@@ -49,17 +49,23 @@ class _RegistrationCardState extends State<RegistrationCard> {
     UserStore.phone = _phoneController.text.trim();
     UserStore.branch = _selectedBranch;
 
-    UserStore.save();
-
     final phone = _phoneController.text.trim();
-    AdminStore.addAccount(AdminAccount(
+    final newAccount = AdminAccount(
       customerName: _nameController.text.trim(),
       phone: phone,
       email: _emailController.text.trim(),
       branchName: _selectedBranch,
-    ));
+    );
+    AdminStore.addAccount(newAccount);
     AdminStore.setPassword(phone, _passwordController.text);
     AdminStore.savePasswords();
+
+    UserStore.accountNumber = newAccount.accountNumber;
+    UserStore.accountType = newAccount.accountType;
+    UserStore.balance = newAccount.balance;
+    UserStore.accountStatus = newAccount.status;
+    UserStore.openedOn = newAccount.openedOn;
+    UserStore.save();
 
     Routes.pushToDashboard(context);
   }
