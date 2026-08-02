@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../core/routes.dart';
+import '../core/user_store.dart';
 
 class LoginCard extends StatefulWidget {
   const LoginCard({super.key});
@@ -220,7 +221,21 @@ class _LoginCardState extends State<LoginCard> {
 
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Routes.pushToDashboard(context);
+                          final email = _emailController.text.trim();
+                          final password = _passwordController.text.trim();
+
+                          if (email == 'admin' && password == 'admin1') {
+                            Routes.pushToAdmin(context);
+                          } else if (UserStore.name.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('No account found. Please sign up first.'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          } else {
+                            Routes.pushToDashboard(context);
+                          }
                         },
 
                         style: ElevatedButton.styleFrom(

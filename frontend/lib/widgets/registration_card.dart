@@ -48,6 +48,7 @@ class _RegistrationCardState extends State<RegistrationCard> {
     UserStore.phone = _phoneController.text.trim();
     UserStore.branch = _selectedBranch;
 
+    UserStore.save();
     Routes.pushToDashboard(context);
   }
 

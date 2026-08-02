@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/account_screen.dart';
+import '../screens/admin_screen.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/deposit_screen.dart';
 import '../screens/loan_screen.dart';
@@ -28,6 +29,7 @@ class Routes {
   static const String loans = '/loans';
   static const String profile = '/profile';
   static const String registration = '/registration';
+  static const String admin = '/admin';
 
   // Route generator – wired into [MaterialApp.onGenerateRoute]
 
@@ -56,6 +58,10 @@ class Routes {
       case registration:
         return MaterialPageRoute(
           builder: (_) => const RegistrationScreen(),
+        );
+      case admin:
+        return MaterialPageRoute(
+          builder: (_) => const AdminScreen(),
         );
       default:
         return MaterialPageRoute(
@@ -96,5 +102,9 @@ class Routes {
 
   static void pushToRegistration(BuildContext context) {
     Navigator.pushNamed(context, registration);
+  }
+
+  static void pushToAdmin(BuildContext context) {
+    Navigator.pushReplacementNamed(context, admin);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../models/customer.dart';
 
 class UserStore {
@@ -14,6 +16,22 @@ class UserStore {
         phone: phone,
         branch: branch,
       );
+
+  static Future<void> save() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', name);
+    await prefs.setString('email', email);
+    await prefs.setString('phone', phone);
+    await prefs.setString('branch', branch);
+  }
+
+  static Future<void> load() async {
+    final prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('name') ?? '';
+    email = prefs.getString('email') ?? '';
+    phone = prefs.getString('phone') ?? '';
+    branch = prefs.getString('branch') ?? '';
+  }
 
   static void clear() {
     name = '';
