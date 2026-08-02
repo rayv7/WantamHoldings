@@ -12,19 +12,19 @@ class AddAccountDialog extends StatefulWidget {
 class _AddAccountDialogState extends State<AddAccountDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _depositController = TextEditingController();
   String _accountType = 'Savings';
   String _branch = 'Westlands';
-  String _pin = '1234';
 
-  final _types = ['Savings', 'Current'];
+  final _types = ['Savings', 'Checking'];
   final _branches = ['Westlands', 'CBD', 'Mombasa', 'Kisumu'];
-  final _pins = ['1234', '5678', '9012', '3456', '7890'];
 
   @override
   void dispose() {
     _nameController.dispose();
+    _emailController.dispose();
     _phoneController.dispose();
     _depositController.dispose();
     super.dispose();
@@ -68,6 +68,14 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
                 ),
                 const SizedBox(height: 14),
                 TextFormField(
+                  controller: _emailController,
+                  decoration: _input('Email Address', Icons.email_outlined),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (v) =>
+                      v == null || v.trim().isEmpty ? 'Required' : null,
+                ),
+                const SizedBox(height: 14),
+                TextFormField(
                   controller: _phoneController,
                   decoration: _input('Phone Number', Icons.phone_outlined),
                   keyboardType: TextInputType.phone,
@@ -97,17 +105,6 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
                   },
                 ),
                 const SizedBox(height: 14),
-                DropdownButtonFormField<String>(
-                  value: _pin,
-                  decoration: _input('Initial PIN', Icons.lock_outline),
-                  items: _pins
-                      .map((p) => DropdownMenuItem(value: p, child: Text(p)))
-                      .toList(),
-                  onChanged: (v) {
-                    if (v != null) _pin = v;
-                  },
-                ),
-                const SizedBox(height: 14),
                 TextFormField(
                   controller: _depositController,
                   decoration: _input('Initial Deposit (KES)', Icons.money_outlined),
@@ -128,9 +125,9 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
                       final account = AdminAccount(
                         customerName: _nameController.text.trim(),
                         phone: _phoneController.text.trim(),
+                        email: _emailController.text.trim(),
                         accountType: _accountType,
                         branchName: _branch,
-                        pin: _pin,
                         balance: double.tryParse(_depositController.text) ?? 0,
                       );
                       AdminStore.addAccount(account);

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../core/admin_store.dart';
 import '../core/routes.dart';
 import '../core/user_store.dart';
 
@@ -49,6 +50,17 @@ class _RegistrationCardState extends State<RegistrationCard> {
     UserStore.branch = _selectedBranch;
 
     UserStore.save();
+
+    final phone = _phoneController.text.trim();
+    AdminStore.addAccount(AdminAccount(
+      customerName: _nameController.text.trim(),
+      phone: phone,
+      email: _emailController.text.trim(),
+      branchName: _selectedBranch,
+    ));
+    AdminStore.setPassword(phone, _passwordController.text);
+    AdminStore.savePasswords();
+
     Routes.pushToDashboard(context);
   }
 

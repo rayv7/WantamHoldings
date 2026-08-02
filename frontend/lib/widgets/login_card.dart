@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../core/admin_store.dart';
 import '../core/routes.dart';
 import '../core/user_store.dart';
+import '../widgets/set_password_dialog.dart';
 
 class LoginCard extends StatefulWidget {
   const LoginCard({super.key});
@@ -220,22 +222,56 @@ class _LoginCardState extends State<LoginCard> {
                       ),
 
                       child: ElevatedButton.icon(
-                        onPressed: () {
+                        onPressed: () async {
                           final email = _emailController.text.trim();
                           final password = _passwordController.text.trim();
 
                           if (email == 'admin' && password == 'admin1') {
                             Routes.pushToAdmin(context);
-                          } else if (UserStore.name.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('No account found. Please sign up first.'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          } else {
-                            Routes.pushToDashboard(context);
+                            return;
                           }
+
+                          final account = AdminStore.getAccountByUsername(email);
+                          if (account != null) {
+                            if (!AdminStore.hasPassword(account.phone)) {
+                              final result = await showDialog<bool>(
+                                context: context,
+                                builder: (_) =>
+                                    SetPasswordDialog(phone: account.phone),
+                              );
+                              if (result == true) {
+                                if (!context.mounted) return;
+                                UserStore.name = account.customerName;
+                                UserStore.email = account.email;
+                                UserStore.phone = account.phone;
+                                UserStore.branch = account.branchName;
+                                Routes.pushToDashboard(context);
+                              }
+                            } else if (AdminStore.verifyPassword(
+                                account.phone, password)) {
+                              UserStore.name = account.customerName;
+                              UserStore.email = account.email;
+                              UserStore.phone = account.phone;
+                              UserStore.branch = account.branchName;
+                              Routes.pushToDashboard(context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Wrong password. Try again.'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                            return;
+                          }
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('No account found. Please sign up first.'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
                         },
 
                         style: ElevatedButton.styleFrom(

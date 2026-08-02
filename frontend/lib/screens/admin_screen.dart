@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/admin_store.dart';
+import '../core/routes.dart';
 import '../widgets/add_account_dialog.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -38,10 +39,11 @@ class _AdminScreenState extends State<AdminScreen> {
         ),
         backgroundColor: const Color(0xFFE3EEF1),
         foregroundColor: const Color(0xFF0A4D8C),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Routes.pushToLogin(context),
             tooltip: 'Logout',
           ),
         ],
@@ -674,7 +676,7 @@ class _AdminScreenState extends State<AdminScreen> {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                items: ['Savings', 'Current']
+                items: ['Savings', 'Checking']
                     .map((t) => DropdownMenuItem(value: t, child: Text(t)))
                     .toList(),
                 onChanged: (v) {

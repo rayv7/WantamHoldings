@@ -104,6 +104,10 @@ class Routes {
     Navigator.pushNamed(context, registration);
   }
 
+  static void pushToLogin(BuildContext context) {
+    Navigator.pushReplacementNamed(context, login);
+  }
+
   static void pushToAdmin(BuildContext context) {
     Navigator.pushReplacementNamed(context, admin);
   }

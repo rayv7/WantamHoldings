@@ -1,7 +1,10 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 class AdminAccount {
   String accountNumber;
   String customerName;
   String phone;
+  String email;
   String pin;
   String accountType;
   String branchName;
@@ -13,6 +16,7 @@ class AdminAccount {
     this.accountNumber = '',
     required this.customerName,
     required this.phone,
+    this.email = '',
     this.pin = '1234',
     this.accountType = 'Savings',
     this.branchName = 'Westlands',
@@ -89,6 +93,7 @@ class AdminStore {
       accountNumber: '0123456789',
       customerName: 'Brian Ochieng',
       phone: '+254 712 345 678',
+      email: 'brian@wantam.co',
       pin: '1234',
       accountType: 'Savings',
       branchName: 'Westlands',
@@ -99,8 +104,9 @@ class AdminStore {
       accountNumber: '0987654321',
       customerName: 'Ann Wanjiru',
       phone: '+254 723 456 789',
+      email: 'ann@wantam.co',
       pin: '5678',
-      accountType: 'Current',
+      accountType: 'Checking',
       branchName: 'CBD',
       balance: 520000,
       openedOn: '03 Mar 2021',
@@ -109,6 +115,7 @@ class AdminStore {
       accountNumber: '0555666777',
       customerName: 'Peter Kamau',
       phone: '+254 734 567 890',
+      email: 'peter@wantam.co',
       pin: '9012',
       accountType: 'Savings',
       branchName: 'Mombasa',
@@ -119,8 +126,9 @@ class AdminStore {
       accountNumber: '0444333222',
       customerName: 'Mary Akinyi',
       phone: '+254 745 678 901',
+      email: 'mary@wantam.co',
       pin: '3456',
-      accountType: 'Current',
+      accountType: 'Checking',
       branchName: 'Kisumu',
       balance: 1200000,
       openedOn: '10 Nov 2020',
@@ -129,6 +137,7 @@ class AdminStore {
       accountNumber: '0777888999',
       customerName: 'James Mwangi',
       phone: '+254 756 789 012',
+      email: 'james@wantam.co',
       pin: '7890',
       accountType: 'Savings',
       branchName: 'Westlands',
@@ -245,5 +254,54 @@ class AdminStore {
 
   static void addMessage(SystemMessage m) {
     messages.insert(0, m);
+  }
+
+  static AdminAccount? getAccountByPhone(String phone) {
+    for (final a in accounts) {
+      if (a.phone == phone) return a;
+    }
+    return null;
+  }
+
+  static AdminAccount? getAccountByUsername(String username) {
+    for (final a in accounts) {
+      if (a.phone == username || a.email == username) return a;
+    }
+    return null;
+  }
+
+  static final Map<String, String> _passwords = {};
+
+  static bool hasPassword(String phone) => _passwords.containsKey(phone);
+
+  static void setPassword(String phone, String password) {
+    _passwords[phone] = password;
+  }
+
+  static bool verifyPassword(String phone, String password) {
+    return _passwords[phone] == password;
+  }
+
+  static Future<void> savePasswords() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('admin_passwords', _passwords.toString());
+  }
+
+  static Future<void> loadPasswords() async {
+    final prefs = await SharedPreferences.getInstance();
+    final stored = prefs.getString('admin_passwords');
+    if (stored != null && stored.isNotEmpty) {
+      _passwords.clear();
+      final entries = stored
+          .replaceAll('{', '')
+          .replaceAll('}', '')
+          .split(', ');
+      for (final entry in entries) {
+        final parts = entry.split(': ');
+        if (parts.length == 2) {
+          _passwords[parts[0].trim()] = parts[1].trim();
+        }
+      }
+    }
   }
 }
