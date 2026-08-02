@@ -48,7 +48,7 @@ class _DepositScreenState extends State<DepositScreen> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _selectedAccount,
+              initialValue: _selectedAccount,
               decoration: InputDecoration(
                 labelText: 'Select Account',
                 filled: true,
@@ -85,7 +85,7 @@ class _DepositScreenState extends State<DepositScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: _depositMethod,
+              initialValue: _depositMethod,
               decoration: InputDecoration(
                 labelText: 'Deposit Method',
                 filled: true,

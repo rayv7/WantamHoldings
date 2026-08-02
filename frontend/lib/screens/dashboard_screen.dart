@@ -146,38 +146,46 @@ class DashboardHomeView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.zero,
               itemCount: 6,
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              separatorBuilder: (_, _) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
                 final actions = [
                   (
                     Icons.account_balance_wallet_outlined,
                     'Account',
                     const Color(0xFF0A4D8C),
-                    MaterialPageRoute(builder: (_) => const AccountScreen()),
+                    () => MaterialPageRoute(
+                      builder: (_) => const AccountScreen(),
+                    ),
                   ),
                   (
                     Icons.arrow_downward,
                     'Deposit',
                     const Color(0xFF1F8A5C),
-                    MaterialPageRoute(builder: (_) => const DepositScreen()),
+                    () => MaterialPageRoute(
+                      builder: (_) => const DepositScreen(),
+                    ),
                   ),
                   (
                     Icons.arrow_upward,
                     'Withdraw',
                     const Color(0xFFB5551F),
-                    MaterialPageRoute(builder: (_) => const WithdrawalScreen()),
+                    () => MaterialPageRoute(
+                      builder: (_) => const WithdrawalScreen(),
+                    ),
                   ),
                   (
                     Icons.swap_horiz,
                     'Transfer',
                     const Color(0xFF7B61FF),
-                    MaterialPageRoute(builder: (_) => const TransferScreen()),
+                    () => MaterialPageRoute(
+                      builder: (_) => const TransferScreen(),
+                    ),
                   ),
                   (
                     Icons.receipt_long,
                     'History',
                     const Color(0xFF0F766E),
-                    MaterialPageRoute(
+                    () => MaterialPageRoute(
                       builder: (_) => const TransactionHistoryScreen(),
                     ),
                   ),
@@ -185,7 +193,7 @@ class DashboardHomeView extends StatelessWidget {
                     Icons.request_quote_outlined,
                     'Loans',
                     const Color(0xFF7C3AED),
-                    MaterialPageRoute(builder: (_) => const LoanScreen()),
+                    () => MaterialPageRoute(builder: (_) => const LoanScreen()),
                   ),
                 ];
 
@@ -198,7 +206,7 @@ class DashboardHomeView extends StatelessWidget {
                     label: action.$2,
                     compact: true,
                     color: action.$3,
-                    onTap: () => Navigator.push(context, action.$4),
+                    onTap: () => Navigator.push(context, action.$4()),
                   ),
                 );
               },
@@ -227,9 +235,9 @@ class DashboardHomeView extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          ...transactions
-              .map((transaction) => TransactionTile(transaction: transaction))
-              .toList(),
+          ...transactions.map(
+            (transaction) => TransactionTile(transaction: transaction),
+          ),
         ],
       ),
     );

@@ -55,7 +55,7 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _selectedAccount,
+              initialValue: _selectedAccount,
               decoration: InputDecoration(
                 labelText: 'Select Account',
                 filled: true,
@@ -92,7 +92,7 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: _withdrawalMethod,
+              initialValue: _withdrawalMethod,
               decoration: InputDecoration(
                 labelText: 'Withdrawal Method',
                 filled: true,
