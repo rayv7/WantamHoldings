@@ -8,7 +8,7 @@ async function main() {
     RoleType.MANAGER,
     RoleType.TELLER,
     RoleType.CUSTOMER,
-    RoleType.AUDITOR,
+    RoleType.AUDITOR, 
   ];
 
   for (const role of roles) {

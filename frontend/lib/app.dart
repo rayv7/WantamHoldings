@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
+import 'core/routes.dart';
 import 'core/theme.dart';
 
 class BankApp extends StatelessWidget {
@@ -11,7 +11,8 @@ class BankApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Wantam Holdings',
       theme: AppTheme.lightTheme,
-      home: const LoginScreen(),
+      initialRoute: Routes.login,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }
