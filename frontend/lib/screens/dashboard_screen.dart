@@ -24,7 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildScreen() {
     switch (_selectedIndex) {
       case 0:
-        return const DashboardHomeView();
+        return DashboardHomeView(onRefresh: () => setState(() {}));
       case 1:
         return const TransactionHistoryScreen();
       case 2:
@@ -32,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 3:
         return const ProfileScreen();
       default:
-        return const DashboardHomeView();
+        return DashboardHomeView(onRefresh: () => setState(() {}));
     }
   }
 
@@ -91,8 +91,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-class DashboardHomeView extends StatelessWidget {
-  const DashboardHomeView({super.key});
+class DashboardHomeView extends StatefulWidget {
+  final VoidCallback onRefresh;
+
+  const DashboardHomeView({super.key, required this.onRefresh});
+
+  @override
+  State<DashboardHomeView> createState() => _DashboardHomeViewState();
+}
+
+class _DashboardHomeViewState extends State<DashboardHomeView> {
+  Future<void> _navigateAndRefresh(String route) async {
+    final result = await Navigator.pushNamed(context, route);
+    if (result == true) {
+      widget.onRefresh();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,19 +166,19 @@ class DashboardHomeView extends StatelessWidget {
                     Icons.arrow_downward,
                     'Deposit',
                     const Color(0xFF1F8A5C),
-                    () => Routes.pushToDeposit(context),
+                    () => _navigateAndRefresh(Routes.deposit),
                   ),
                   (
                     Icons.arrow_upward,
                     'Withdraw',
                     const Color(0xFFB5551F),
-                    () => Routes.pushToWithdrawal(context),
+                    () => _navigateAndRefresh(Routes.withdrawal),
                   ),
                   (
                     Icons.swap_horiz,
                     'Transfer',
                     const Color(0xFF7B61FF),
-                    () => Routes.pushToTransfer(context),
+                    () => _navigateAndRefresh(Routes.transfer),
                   ),
                   (
                     Icons.receipt_long,

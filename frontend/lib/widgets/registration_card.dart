@@ -44,11 +44,6 @@ class _RegistrationCardState extends State<RegistrationCard> {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
 
-    UserStore.name = _nameController.text.trim();
-    UserStore.email = _emailController.text.trim();
-    UserStore.phone = _phoneController.text.trim();
-    UserStore.branch = _selectedBranch;
-
     final phone = _phoneController.text.trim();
     final newAccount = AdminAccount(
       customerName: _nameController.text.trim(),
@@ -60,14 +55,8 @@ class _RegistrationCardState extends State<RegistrationCard> {
     AdminStore.setPassword(phone, _passwordController.text);
     AdminStore.savePasswords();
 
-    UserStore.accountNumber = newAccount.accountNumber;
-    UserStore.accountType = newAccount.accountType;
-    UserStore.balance = newAccount.balance;
-    UserStore.accountStatus = newAccount.status;
-    UserStore.openedOn = newAccount.openedOn;
-    UserStore.save();
-
-    Routes.pushToDashboard(context);
+    UserStore.clear();
+    Routes.pushToLogin(context);
   }
 
   @override

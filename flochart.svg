@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 950" width="100%" height="100%" style="background-color: #ffffff; font-family: Arial, sans-serif;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333333"/>
+    </marker>
+  </defs>
+
+  <!-- Start Node -->
+  <rect x="250" y="20" width="300" height="50" rx="25" fill="#0A4D8C" stroke="#002D5A" stroke-width="2"/>
+  <text x="400" y="50" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="bold">START: Transaction Request</text>
+
+  <line x1="400" y1="70" x2="400" y2="110" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 1 -->
+  <rect x="230" y="110" width="340" height="50" rx="8" fill="#F0F4F8" stroke="#0A4D8C" stroke-width="2"/>
+  <text x="400" y="140" text-anchor="middle" fill="#333333" font-size="14">Validate Input &amp; Account Parameters</text>
+
+  <line x1="400" y1="160" x2="400" y2="200" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2 -->
+  <rect x="230" y="200" width="340" height="50" rx="8" fill="#F0F4F8" stroke="#0A4D8C" stroke-width="2"/>
+  <text x="400" y="230" text-anchor="middle" fill="#333333" font-size="14">Look Up Account Records</text>
+
+  <line x1="400" y1="250" x2="400" y2="290" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Decision 1 -->
+  <polygon points="400,290 530,340 400,390 270,340" fill="#EBF3FA" stroke="#0A4D8C" stroke-width="2"/>
+  <text x="400" y="345" text-anchor="middle" fill="#333333" font-size="13" font-weight="bold">Account Active?</text>
+
+  <!-- Decision 1 NO Path -->
+  <line x1="270" y1="340" x2="160" y2="340" stroke="#D32F2F" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="215" y="330" text-anchor="middle" fill="#D32F2F" font-size="12" font-weight="bold">NO</text>
+  <rect x="10" y="315" x2="150" width="150" height="50" rx="8" fill="#FFEBEE" stroke="#D32F2F" stroke-width="2"/>
+  <text x="85" y="345" text-anchor="middle" fill="#C62828" font-size="12">Throw BadRequest</text>
+
+  <!-- Decision 1 YES Path -->
+  <line x1="400" y1="390" x2="400" y2="430" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="415" y="410" fill="#2E7D32" font-size="12" font-weight="bold">YES</text>
+
+  <!-- Decision 2 -->
+  <polygon points="400,430 530,480 400,530 270,480" fill="#EBF3FA" stroke="#0A4D8C" stroke-width="2"/>
+  <text x="400" y="485" text-anchor="middle" fill="#333333" font-size="13" font-weight="bold">Balance Sufficient?</text>
+
+  <!-- Decision 2 NO Path -->
+  <line x1="270" y1="480" x2="160" y2="480" stroke="#D32F2F" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="215" y="470" text-anchor="middle" fill="#D32F2F" font-size="12" font-weight="bold">NO</text>
+  <rect x="10" y="455" width="150" height="50" rx="8" fill="#FFEBEE" stroke="#D32F2F" stroke-width="2"/>
+  <text x="85" y="485" text-anchor="middle" fill="#C62828" font-size="12">Throw BadRequest</text>
+
+  <!-- Decision 2 YES Path -->
+  <line x1="400" y1="530" x2="400" y2="570" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="415" y="550" fill="#2E7D32" font-size="12" font-weight="bold">YES</text>
+
+  <!-- Transaction Subsystem -->
+  <rect x="200" y="570" width="400" height="210" rx="10" fill="#F5F5F5" stroke="#757575" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="400" y="595" text-anchor="middle" fill="#0A4D8C" font-size="14" font-weight="bold">prisma.$transaction() Atomic Block</text>
+
+  <rect x="230" y="610" width="340" height="35" rx="5" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
+  <text x="400" y="632" text-anchor="middle" fill="#333333" font-size="12">1. Generate Reference (TXN...)</text>
+
+  <rect x="230" y="650" width="340" height="35" rx="5" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
+  <text x="400" y="672" text-anchor="middle" fill="#333333" font-size="12">2. Create Transaction Records (COMPLETED)</text>
+
+  <rect x="230" y="690" width="340" height="35" rx="5" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
+  <text x="400" y="712" text-anchor="middle" fill="#333333" font-size="12">3. Update Account Balances (+/- amount)</text>
+
+  <rect x="230" y="730" width="340" height="35" rx="5" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
+  <text x="400" y="752" text-anchor="middle" fill="#333333" font-size="12">4. Create AuditLog Entry</text>
+
+  <line x1="400" y1="780" x2="400" y2="820" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Output Node -->
+  <rect x="230" y="820" width="340" height="50" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+  <text x="400" y="850" text-anchor="middle" fill="#1B5E20" font-size="14" font-weight="bold">Return TransactionResult</text>
+
+  <line x1="400" y1="870" x2="400" y2="900" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- End Node -->
+  <rect x="300" y="900" width="200" height="40" rx="20" fill="#0A4D8C" stroke="#002D5A" stroke-width="2"/>
+  <text x="400" y="925" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="bold">END</text>
+</svg>

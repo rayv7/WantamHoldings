@@ -279,6 +279,18 @@ class AdminStore {
     return null;
   }
 
+  static AdminAccount? getAccountByNumber(String accountNumber) {
+    for (final a in accounts) {
+      if (a.accountNumber == accountNumber) return a;
+    }
+    return null;
+  }
+
+  static bool isAccountFrozen(String accountNumber) {
+    final account = getAccountByNumber(accountNumber);
+    return account?.status == 'Frozen';
+  }
+
   static final Map<String, String> _passwords = {};
 
   static bool hasPassword(String phone) => _passwords.containsKey(phone);

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@page {
+  size: A4;
+  margin: 1.6cm 1.5cm 1.6cm 1.5cm;
+  @bottom-center {
+    content: "Page " counter(page);
+    font-size: 7pt;
+    color: #999;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+}
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 8.5pt;
+  line-height: 1.35;
+  color: #222;
+}
+h1 { font-size: 16pt; color: #0A4D8C; margin-top: 0; }
+h2 { font-size: 12pt; color: #0A4D8C; border-bottom: 1.5px solid #0A4D8C; padding-bottom: 2px; margin-top: 12px; margin-bottom: 4px; }
+h3 { font-size: 10pt; color: #1F1F1F; margin-top: 6px; margin-bottom: 3px; }
+p { margin: 2px 0; text-align: justify; }
+ul, ol { margin: 1px 0 1px 14px; }
+li { margin: 0; }
+table { width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 7.5pt; }
+th { background: #0A4D8C; color: white; padding: 3px 5px; text-align: left; }
+td { padding: 2px 5px; border-bottom: 1px solid #ddd; }
+tr:nth-child(even) td { background: #f6f8fb; }
+.page-break { page-break-before: always; }
+.cover-page {
+  display: flex; flex-direction: column; justify-content: center;
+  height: 95vh; text-align: center; page-break-after: always;
+}
+.cover-page h1 { font-size: 24pt; margin-bottom: 6px; }
+.cover-page h2 { font-size: 13pt; border: none; color: #555; font-weight: normal; margin: 3px 0; }
+.cover-page .subtitle { font-size: 12pt; color: #666; margin: 14px 0 28px 0; }
+.cover-page .info { font-size: 10pt; color: #444; margin: 3px 0; }
+.cover-line { width: 100px; height: 2.5px; background: #0A4D8C; margin: 16px auto; }
+.section-number { display: inline-block; font-weight: bold; color: #0A4D8C; margin-right: 6px; }
+.code-block {
+  background: #f4f4f4; border-left: 3px solid #0A4D8C; padding: 10px 14px;
+  font-family: 'Courier New', monospace; font-size: 9pt; white-space: pre-wrap;
+  margin: 10px 0; line-height: 1.4;
+}
+.diagram-box {
+  background: #f9f9f9; border: 1px solid #ddd; padding: 16px;
+  margin: 12px 0; text-align: center; font-family: 'Courier New', monospace; font-size: 9pt;
+}
+.req-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.req-item { background: #eef4fb; padding: 4px 10px; border-radius: 4px; font-size: 10pt; }
+.note { background: #fff9e6; border-left: 3px solid #f0ad4e; padding: 8px 12px; margin: 10px 0; font-size: 10pt; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER PAGE ============ -->
+<div class="cover-page">
+  <h1>Wantam Holdings</h1>
+  <h1>Banking Management System</h1>
+  <div class="cover-line"></div>
+  <div class="subtitle">A Secure, Scalable, and Cross-Platform Digital Banking Platform</div>
+  <p class="info"><strong>Course:</strong> Software Engineering Project</p>
+  <p class="info"><strong>Submission Date:</strong> August 2026</p>
+  <p class="info"><strong>GitHub Repository:</strong> https://github.com/rayv7/wantamHoldings</p>
+</div>
+
+<!-- ============ GROUP MEMBERS ============ -->
+<h2>2. Group Members</h2>
+<table>
+  <tr><th>#</th><th>Name</th><th>Student ID</th><th>Role</th></tr>
+  <tr><td>1</td><td>Raymond Athanas</td><td>24-2578</td><td>Project Lead / Full-Stack Developer</td></tr>
+  <tr><td>2</td><td>Obutu Enoch</td><td>22-0950</td><td>Backend Developer</td></tr>
+  <tr><td>3</td><td>Humphery Kusimba</td><td>23-2552</td><td>Frontend Developer</td></tr>
+  <tr><td>4</td><td>Julia Selvine</td><td>23-2759</td><td>UI/UX Designer</td></tr>
+  <tr><td>5</td><td>Jakes Murila</td><td>24-2975</td><td>Backend Developer</td></tr>
+</table>
+
+<!-- ============ INTRODUCTION ============ -->
+<h2>3. Introduction</h2>
+<p>
+The Wantam Holdings Banking Management System is a modern, secure, and cross-platform digital banking application designed to bridge the gap between traditional banking services and the growing demand for accessible, real-time financial management. Built using Flutter for the frontend and NestJS for the backend, the system provides customers with a full suite of banking capabilities while equipping administrators with powerful tools to manage accounts, transactions, users, and financial reporting.
+</p>
+<p>
+The application follows a client-server architecture, where the Flutter-based frontend communicates with a RESTful API backend through secure HTTPS connections. All banking data is stored in a PostgreSQL relational database accessed via the Prisma ORM, ensuring data integrity, security, and transactional consistency. The system implements industry-standard security practices including JWT-based authentication, BCrypt password hashing, and Role-Based Access Control (RBAC) to protect sensitive financial information.
+</p>
+<p>
+The system supports multiple deployment platforms — including mobile (Android and iOS), web, and desktop — through Flutter's cross-platform capabilities. This ensures that customers can access their banking services from any device without sacrificing user experience or security. Additionally, the system includes USSD banking support for users without internet connectivity, making banking services accessible to a broader population.
+</p>
+<p>
+Key features of the system include customer registration and authentication, account management, deposits and withdrawals, fund transfers between accounts, transaction history with search and filtering capabilities, loan management, and an administrative dashboard for monitoring and managing the entire banking ecosystem.
+</p>
+
+<!-- ============ PROBLEM STATEMENT ============ -->
+<h2>4. Problem Statement</h2>
+<p>
+Many small to medium financial institutions face significant challenges in delivering modern digital banking services to their customers. The key problems that this project addresses include:
+</p>
+<ul>
+  <li><strong>Limited Accessibility:</strong> Traditional banking services require customers to visit physical branches during operating hours, which is inconvenient and limits access to banking services, particularly in rural or underserved areas.</li>
+  <li><strong>Fragmented Systems:</strong> Many institutions rely on disparate, unintegrated systems for customer management, account operations, and transaction processing, leading to inefficiencies, data inconsistencies, and increased operational costs.</li>
+  <li><strong>Security Concerns:</strong> Financial systems are prime targets for cyberattacks. Without robust authentication mechanisms, encryption, and access control, customer funds and sensitive data are at risk.</li>
+  <li><strong>Lack of Real-Time Visibility:</strong> Customers and administrators alike need real-time access to account balances, transaction histories, and financial reports to make informed decisions.</li>
+  <li><strong>Cross-Platform Gaps:</strong> Many existing solutions are limited to a single platform (e.g., web-only or mobile-only), failing to provide a consistent experience across devices.</li>
+  <li><strong>Connectivity Barriers:</strong> Not all customers have reliable internet access. A digital banking solution must accommodate offline-capable or USSD-based alternatives to remain inclusive.</li>
+</ul>
+<p>
+The Wantam Holdings Banking Management System aims to solve these problems by delivering a secure, unified, cross-platform banking platform that is accessible from mobile devices, web browsers, and even feature phones via USSD.
+</p>
+
+<!-- ============ OBJECTIVES ============ -->
+<h2>5. Objectives</h2>
+<h3>5.1 General Objective</h3>
+<p>
+To design and develop a secure, scalable, and cross-platform Banking Management System that enables customers to perform digital banking transactions while providing administrators with comprehensive tools for managing the banking ecosystem.
+</p>
+<h3>5.2 Specific Objectives</h3>
+<ol>
+  <li>Develop a secure authentication and authorization system using JWT tokens and BCrypt password hashing with role-based access control (RBAC).</li>
+  <li>Implement core banking operations including deposits, withdrawals, and fund transfers with transactional atomicity and audit logging.</li>
+  <li>Design a relational database schema that supports customers, accounts, transactions, transfers, notifications, and audit logs with proper indexing and referential integrity.</li>
+  <li>Build a cross-platform Flutter frontend that provides a responsive, Material Design 3 user interface across mobile, web, and desktop platforms.</li>
+  <li>Create a RESTful API backend using NestJS with proper input validation, error handling, and API documentation via Swagger.</li>
+  <li>Implement administrative features for managing customers, accounts, users, and generating financial reports.</li>
+  <li>Provide account statement generation with date-range filtering and transaction search capabilities.</li>
+  <li>Support USSD banking services for customers without internet connectivity.</li>
+  <li>Incorporate comprehensive testing — unit tests, API tests, and integration tests — to ensure system reliability.</li>
+</ol>
+
+<!-- ============ FUNCTIONAL REQUIREMENTS ============ -->
+<h2>6. Functional Requirements</h2>
+<p>The system is divided into two primary user categories: <strong>Customers</strong> and <strong>Administrators</strong>. Below is a comprehensive listing of the functional requirements for each.</p>
+
+<h3>6.1 Customer Functional Requirements</h3>
+<table>
+  <tr><th>ID</th><th>Requirement</th><th>Description</th></tr>
+  <tr><td>FR-C01</td><td>User Registration</td><td>The system shall allow new customers to register by providing their name, email, phone number, and password.</td></tr>
+  <tr><td>FR-C02</td><td>Secure Login/Logout</td><td>The system shall authenticate users using email and password credentials and issue JWT tokens for session management.</td></tr>
+  <tr><td>FR-C03</td><td>Password Management</td><td>Customers shall be able to reset and change their passwords.</td></tr>
+  <tr><td>FR-C04</td><td>View Profile</td><td>Customers shall be able to view their personal profile information.</td></tr>
+  <tr><td>FR-C05</td><td>Update Personal Details</td><td>Customers shall be able to update their personal information such as phone number and address.</td></tr>
+  <tr><td>FR-C06</td><td>View Account Information</td><td>Customers shall be able to view account details including account number, type, status, and opening date.</td></tr>
+  <tr><td>FR-C07</td><td>Check Balance</td><td>Customers shall be able to check their account balance in real time.</td></tr>
+  <tr><td>FR-C08</td><td>Deposit Funds</td><td>Customers and tellers shall be able to deposit funds into accounts.</td></tr>
+  <tr><td>FR-C09</td><td>Withdraw Funds</td><td>Customers and tellers shall be able to withdraw funds from accounts (subject to sufficient balance).</td></tr>
+  <tr><td>FR-C10</td><td>Transfer Funds</td><td>Customers shall be able to transfer funds between accounts, creating both debit and credit transaction records.</td></tr>
+  <tr><td>FR-C11</td><td>View Transaction History</td><td>Customers shall be able to view a complete list of their transactions.</td></tr>
+  <tr><td>FR-C12</td><td>Search and Filter Transactions</td><td>Customers shall be able to search and filter transactions by date range, type, and amount.</td></tr>
+  <tr><td>FR-C13</td><td>Receive Notifications</td><td>Customers shall receive notifications for key account activities.</td></tr>
+  <tr><td>FR-C14</td><td>Loan Management</td><td>Customers shall be able to view loan eligibility, apply for loans, and track active loans.</td></tr>
+</table>
+
+<h3>6.2 Administrator Functional Requirements</h3>
+<table>
+  <tr><th>ID</th><th>Requirement</th><th>Description</th></tr>
+  <tr><td>FR-A01</td><td>Manage Customer Accounts</td><td>Administrators shall be able to create, view, update, and close customer accounts.</td></tr>
+  <tr><td>FR-A02</td><td>Account Status Management</td><td>Administrators shall be able to freeze, suspend, or activate accounts as needed.</td></tr>
+  <tr><td>FR-A03</td><td>Monitor Transactions</td><td>Administrators shall be able to view all financial transactions across the system.</td></tr>
+  <tr><td>FR-A04</td><td>User and Role Management</td><td>Administrators shall be able to manage users and assign roles (ADMIN, MANAGER, TELLER, CUSTOMER, AUDITOR).</td></tr>
+  <tr><td>FR-A05</td><td>Generate Financial Reports</td><td>The system shall generate financial reports including transaction summaries and account statements.</td></tr>
+  <tr><td>FR-A06</td><td>View Audit Logs</td><td>Administrators shall be able to view audit logs tracking all system actions.</td></tr>
+  <tr><td>FR-A07</td><td>Apply Interest and Charges</td><td>Administrators and managers shall be able to apply interest credits and account charges.</td></tr>
+  <tr><td>FR-A08</td><td>Manage System Settings</td><td>Administrators shall be able to configure system-wide settings.</td></tr>
+  <tr><td>FR-A09</td><td>Dashboard Analytics</td><td>The system shall display an analytics dashboard showing key metrics such as total deposits, active users, and transaction volumes.</td></tr>
+</table>
+
+<h3>6.3 USSD Banking Requirements</h3>
+<p>The system supports USSD banking for users without internet access, including account registration, balance inquiry, deposits, withdrawals, money transfers, mini-statements, PIN management, and customer support.</p>
+
+<!-- ============ NON-FUNCTIONAL REQUIREMENTS ============ -->
+<h2>7. Non-Functional Requirements</h2>
+<table>
+  <tr><th>ID</th><th>Requirement</th><th>Description</th><th>Priority</th></tr>
+  <tr><td>NFR-01</td><td>Cross-Platform Compatibility</td><td>The frontend must run on Android, iOS, web, and desktop from a single codebase using Flutter.</td><td>High</td></tr>
+  <tr><td>NFR-02</td><td>Responsive User Interface</td><td>The UI must adapt gracefully to different screen sizes and orientations following Material Design 3 principles.</td><td>High</td></tr>
+  <tr><td>NFR-03</td><td>Secure Authentication</td><td>All API endpoints must be protected by JWT-based authentication.</td><td>High</td></tr>
+  <tr><td>NFR-04</td><td>Password Security</td><td>All passwords must be hashed using BCrypt with a minimum of 10 salt rounds.</td><td>High</td></tr>
+  <tr><td>NFR-05</td><td>Role-Based Access Control</td><td>Access to API resources must be restricted based on user roles (ADMIN, MANAGER, TELLER, CUSTOMER, AUDITOR).</td><td>High</td></tr>
+  <tr><td>NFR-06</td><td>RESTful API Design</td><td>The backend must expose well-defined, stateless RESTful APIs with consistent response formats.</td><td>High</td></tr>
+  <tr><td>NFR-07</td><td>High Availability</td><td>The system must be designed for minimal downtime with stateless backend architecture.</td><td>Medium</td></tr>
+  <tr><td>NFR-08</td><td>Modular Architecture</td><td>The codebase must follow a modular structure for maintainability and scalability.</td><td>High</td></tr>
+  <tr><td>NFR-09</td><td>Database Security</td><td>All sensitive data must be stored securely with parameterized queries to prevent SQL injection.</td><td>High</td></tr>
+  <tr><td>NFR-10</td><td>Fast Response Time</td><td>API responses must be returned within 500ms under normal load conditions.</td><td>Medium</td></tr>
+  <tr><td>NFR-11</td><td>Scalable Backend</td><td>The backend must support horizontal scaling through stateless design.</td><td>Medium</td></tr>
+  <tr><td>NFR-12</td><td>Input Validation</td><td>All user inputs must be validated both on the client and server sides.</td><td>High</td></tr>
+  <tr><td>NFR-13</td><td>Audit Trail</td><td>All financial transactions and administrative actions must be logged in the audit trail.</td><td>High</td></tr>
+  <tr><td>NFR-14</td><td>API Documentation</td><td>The API must be documented using Swagger/OpenAPI specifications.</td><td>Medium</td></tr>
+</table>
+
+<!-- ============ SYSTEM DESIGN ============ -->
+<div class="page-break"></div>
+<h2>8. System Design</h2>
+
+<h3>8.1 System Architecture Overview</h3>
+<p>
+The Wantam Holdings Banking Management System follows a three-tier architecture:
+</p>
+<ul>
+  <li><strong>Presentation Tier:</strong> Flutter frontend implementing the MVVM (Model-View-ViewModel) architectural pattern with Riverpod and BLoC for state management. The UI is built with Material Design 3 principles, providing responsive layouts that adapt to mobile, web, and desktop platforms.</li>
+  <li><strong>Application Tier:</strong> NestJS (Node.js) backend providing RESTful APIs organized into feature modules (Auth, Users, Customers, Accounts, Transactions). Each module encapsulates its own controllers, services, DTOs, and guards.</li>
+  <li><strong>Data Tier:</strong> PostgreSQL relational database accessed through the Prisma ORM, providing type-safe database queries, migration management, and transactional integrity.</li>
+</ul>
+
+<h3>8.2 Flowchart — Deposit Transaction</h3>
+<div class="diagram-box" style="font-size: 7pt; line-height: 1.2; padding: 8px;">
+┌───────────┐    ┌───────────────┐    ┌─────────────────────┐<br />
+│  Request   │───→│  Validate     │───→│  Look Up Account    │<br />
+│  Deposit   │    │  Input        │    │  by accountNumber   │<br />
+└───────────┘    └───────────────┘    └──────────┬──────────┘<br />
+                                                  ▼<br />
+                              ┌───────────────────────────────┐<br />
+                              │  Account active? ────No───→    │<br />
+                              │  Balance sufficient?───No───→  │<br />
+                              │  (Yes to both)                │<br />
+                              └──────────────┬────────────────┘<br />
+                                              ▼<br />
+                     ┌─────────────────────────────────────────────────┐<br />
+                     │  prisma.$transaction():                         │<br />
+                     │  ├─ Generate reference (TXN...)                │<br />
+                     │  ├─ Create Transaction record (COMPLETED)      │<br />
+                     │  ├─ Update Account balance (+/- amount)        │<br />
+                     │  └─ Create AuditLog entry                      │<br />
+                     └──────────────────────┬──────────────────────────┘<br />
+                                              ▼<br />
+                              ┌───────────────────────────┐<br />
+                              │  Return TransactionResult │<br />
+                              │  { message, txn, balance }│<br />
+                              └───────────────────────────┘<br />
+</div>
+
+<h3>8.3 Pseudocode — Fund Transfer</h3>
+<div class="code-block" style="font-size: 7pt; line-height: 1.2; padding: 6px;">FUNCTION transfer(senderAccNum, receiverAccNum, amount, desc, user):
+    IF senderAccNum == receiverAccNum THEN THROW BadRequest("Same account")
+    sender = GET account by senderAccNum; receiver = GET account by receiverAccNum
+    IF sender is null or receiver is null THEN THROW NotFound("Account not found")
+    IF sender.status != ACTIVE or receiver.status != ACTIVE THEN THROW BadRequest("Inactive account")
+    IF sender.balance &lt; amount THEN THROW BadRequest("Insufficient balance")
+
+    ref = generateReference()
+    BEGIN TRANSACTION:
+        debitTxn = CREATE Transaction(reference=ref+"-OUT", amount, type=TRANSFER, status=COMPLETED, accountId=sender.id)
+        creditTxn = CREATE Transaction(reference=ref+"-IN", amount, type=TRANSFER, status=COMPLETED, accountId=receiver.id)
+        CREATE Transfer(reference=ref, amount, senderAccountId=sender.id, receiverAccountId=receiver.id, debitTxnId=debitTxn.id, creditTxnId=creditTxn.id)
+        UPDATE sender SET balance = balance - amount
+        UPDATE receiver SET balance = balance + amount
+        CREATE AuditLog(action="TRANSFER", description="Transfer of "+amount+" from "+senderAccNum+" to "+receiverAccNum, userId=user.sub)
+    RETURN TransactionResult("Transfer successful", debitTxn, newBalance)
+END FUNCTION</div>
+
+<h3>8.4 Use Case Diagram</h3>
+<div class="diagram-box" style="font-size: 7pt; line-height: 1.15; padding: 6px;">
+┌─────────────────────────────────────────────────────────────┐<br />
+│                  Banking Management System                    │<br />
+│                                                              │<br />
+│  Customer Use Cases:   Register | Login | View Balance       │<br />
+│  ──────────────────    Deposit | Withdraw | Transfer Funds   │<br />
+│                        Transaction History | Manage Profile   │<br />
+│                        Apply for Loan | View Notifications    │<br />
+│                                                              │<br />
+│  Admin Use Cases:      Manage Customers | Account Approval    │<br />
+│  ────────────────     Freeze/Suspend/Activate Accounts       │<br />
+│                        Monitor Transactions | Generate Reports│<br />
+│                        Manage Users &amp; Roles | View Audit Logs│<br />
+│                        Apply Interest/Charges                 │<br />
+└─────────────────────────────────────────────────────────────┘
+
+<h3>8.5 Entity-Relationship / Class Diagram</h3>
+<div class="diagram-box" style="font-size: 7pt; line-height: 1.15; padding: 6px;">
+Role(id, name)──1──User(id, email, password, roleId)──1──Customer(id, firstName, lastName, nationalId, phone, status, userId)
+                                                                        │1
+                                                                        │
+                                                                        ▼0..*
+                                                               Account(id, accountNumber, accountName, accountType, balance, currency, status, customerId)
+                                                                        │1
+                                                                        │
+                                                                        ▼0..*
+                                                               Transaction(id, reference, amount, type, status, description, accountId, performedByUserId)
+                                                                        │
+                                                                        │  Transfer(id, reference, amount, senderAccountId, receiverAccountId)
+                                                                        │  Notification(id, title, message, isRead, userId)
+                                                                        │  AuditLog(id, action, description, userId, ipAddress, userAgent)
+</div>
+
+<h3>8.6 User Interface Design (Mock-ups)</h3>
+<p>The following screens represent the key pages of the application. All interfaces follow Material Design 3 with a consistent color scheme (primary blue #0A4D8C, white backgrounds, and light grey surfaces):</p>
+
+<table>
+  <tr><th>Module</th><th>Screens</th><th>Key UI Elements</th></tr>
+  <tr><td>Authentication</td><td>Login, Registration, Forgot Password, Change Password</td><td>Frosted glass cards, logo branding, email/password fields, biometric login option, responsive split-pane layout (desktop)</td></tr>
+  <tr><td>Customer Dashboard</td><td>Home, Account Details, Deposit, Withdrawal, Transfer, Transactions, Profile, Loans, Settings</td><td>Bottom navigation bar, balance card with visibility toggle, quick action buttons, recent transactions list, search/filter bar</td></tr>
+  <tr><td>Admin Dashboard</td><td>Overview, Account Management, User Management, Transaction Monitoring, Reports, Analytics, Audit Logs</td><td>Tab-based navigation (Overview, Accounts, Transactions, Messages), stat cards, searchable account lists, action dialogs (Edit/Freeze/Close), system messaging</td></tr>
+</table>
+
+<p>Key design decisions include:</p>
+
+<!-- ============ LANGUAGE JUSTIFICATION ============ -->
+<div class="page-break"></div>
+<h2>9. Justification for the Chosen Programming Language</h2>
+
+<p>The Wantam Holdings Banking Management System was built using <strong>TypeScript</strong> (backend via NestJS) and <strong>Dart</strong> (frontend via Flutter).</p>
+
+<h3>9.1 TypeScript (Backend — NestJS Framework)</h3>
+<ul>
+  <li><strong>Static Typing:</strong> TypeScript's compile-time type checking prevents runtime errors in financial applications where accuracy is critical. Enums for transaction types, Decimal for monetary values, and typed DTOs ensure safety throughout.</li>
+  <li><strong>NestJS Modularity:</strong> NestJS decorators enable clean separation of concerns (controllers, services, modules, guards, pipes). Dependency injection, guard-based authentication, and validation pipes align naturally with banking domain requirements.</li>
+  <li><strong>Rich Ecosystem:</strong> Mature libraries for Prisma ORM, Passport JWT, class-validator, and Swagger provide production-grade tooling out of the box.</li>
+  <li><strong>Async Performance:</strong> Node.js's non-blocking I/O with async/await handles concurrent banking requests efficiently — essential for real-time transaction processing.</li>
+</ul>
+
+<h3>9.2 Dart (Frontend — Flutter Framework)</h3>
+<ul>
+  <li><strong>Cross-Platform:</strong> Single codebase targets Android, iOS, web, and desktop — ideal for serving customers across multiple device types.</li>
+  <li><strong>Native Performance:</strong> Dart compiles to native ARM code (mobile) and optimized JavaScript (web), delivering smooth animations and responsive UI.</li>
+  <li><strong>Material Design 3:</strong> First-class support for modern, accessible, and responsive design patterns.</li>
+  <li><strong>Sound Null Safety:</strong> Dart's strong typing and null safety prevent null pointer exceptions that could corrupt financial data.</li>
+  <li><strong>Hot Reload:</strong> Rapid iteration on UI during development.</li>
+</ul>
+
+<h3>9.3 Why Not Alternatives?</h3>
+<ul>
+  <li><strong>Python/Django:</strong> Inferior concurrency for financial transaction processing; less mature mobile frontend ecosystem.</li>
+  <li><strong>Java/Spring Boot + Android Native:</strong> Separate codebases for mobile and web would double development effort vs. Flutter's single codebase.</li>
+  <li><strong>React Native:</strong> JavaScript bridge impacts UI performance; lacks Flutter's desktop and web maturity.</li>
+</ul>
+
+<!-- ============ SYSTEM IMPLEMENTATION ============ -->
+<div class="page-break"></div>
+<h2>10. System Implementation</h2>
+
+<p>The system was implemented using a modular architecture following clean code principles. Below is an explanation of how key programming concepts were applied in the codebase.</p>
+
+<h3>10.1 Modular Structure</h3>
+<p>
+The backend is organized into feature modules (Auth, Users, Customers, Accounts, Transactions), each containing its own controller, service, DTOs, and module definition. The PrismaModule is decorated with <code>@Global()</code> to make it available across all modules. The frontend follows a similar structure with <code>core/</code>, <code>models/</code>, <code>services/</code>, <code>screens/</code>, and <code>widgets/</code> directories.
+</p>
+
+<h3>10.2 Data Structures</h3>
+<p>
+The system uses Prisma models to define database entities with proper relations and indexes. Key data structures include:
+</p>
+<ul>
+  <li><strong>Enum types:</strong> <code>RoleType</code> (ADMIN, MANAGER, TELLER, CUSTOMER, AUDITOR), <code>AccountType</code> (SAVINGS, CURRENT, FIXED), <code>TransactionType</code> (DEPOSIT, WITHDRAWAL, TRANSFER, REVERSAL, INTEREST, CHARGE), and <code>TransactionStatus</code> (PENDING, COMPLETED, FAILED, REVERSED).</li>
+  <li><strong>Decimal types:</strong> Monetary values use <code>Prisma.Decimal</code> with 18-digit precision and 2 decimal places (<code>@db.Decimal(18, 2)</code>), ensuring accurate financial calculations without floating-point rounding errors.</li>
+  <li><strong>Reference generation:</strong> Account numbers follow the format <code>WH&lt;YY&gt;&lt;9-digit-sequence&gt;</code> (e.g., WH26000000001). Transaction references follow <code>TXN&lt;YYYY&gt;&lt;8-digit-sequence&gt;</code> (e.g., TXN202600000001).</li>
+</ul>
+
+<h3>10.3 Object-Oriented Design</h3>
+<p>
+<strong>Backend (NestJS/TypeScript):</strong>
+</p>
+<ul>
+  <li><strong>Inheritance:</strong> <code>PrismaService extends PrismaClient</code> inherits all database access methods. <code>JwtGuard extends AuthGuard('jwt')</code> inherits Passport's JWT authentication flow. DTOs like <code>UpdateCustomerDto extends PartialType(CreateCustomerDto)</code> reuse validation rules.</li>
+  <li><strong>Encapsulation:</strong> Each service encapsulates its business logic behind well-defined public methods. Private helper methods (<code>getAccount()</code>, <code>validateAccount()</code>, <code>generateReference()</code>, <code>createAudit()</code>) are hidden from consumers.</li>
+  <li><strong>Polymorphism:</strong> Guards (<code>JwtGuard</code>, <code>RolesGuard</code>) implement the <code>CanActivate</code> interface polymorphically, allowing NestJS to invoke them uniformly. Decorators (<code>@Roles()</code>, <code>@CurrentUserDecorator()</code>) work through metadata reflection.</li>
+  <li><strong>Dependency Injection:</strong> All services, guards, and strategies are injected through constructors, making the system loosely coupled and testable.</li>
+</ul>
+<p>
+<strong>Frontend (Flutter/Dart):</strong>
+</p>
+<ul>
+  <li><strong>Widget Composition:</strong> UI is built through composable widgets — <code>AccountCard</code>, <code>QuickActionButton</code>, <code>TransactionTile</code>, <code>EligibilityCard</code>, <code>LoanSummaryCard</code> — each encapsulating its own layout and behavior.</li>
+  <li><strong>Model classes:</strong> <code>CustomerModel</code>, <code>AccountModel</code>, <code>TransactionModel</code>, and <code>LoanModel</code> define immutable data structures for passing data between layers.</li>
+</ul>
+
+<h3>10.4 Database Integration</h3>
+<p>PostgreSQL is accessed through Prisma ORM, providing schema-first development with type-safe queries, automated migration management, and transactional atomicity via <code>prisma.$transaction()</code> — ensuring all financial operations either fully succeed or fully roll back.</p>
+
+<h3>10.5 Error Handling</h3>
+<p>Backend uses NestJS exception filters: <code>BadRequestException</code> (validation, insufficient balance, inactive accounts), <code>NotFoundException</code> (missing entities), <code>UnauthorizedException</code> (invalid credentials). A global <code>ValidationPipe</code> with <code>whitelist</code>, <code>transform</code>, and <code>forbidNonWhitelisted</code> ensures strict input validation. Frontend handles errors via try-catch with user-friendly snackbar messages.</p>
+
+<h3>10.6 Security Implementation</h3>
+<ul>
+  <li>JWT authentication via Passport.js (Bearer tokens with <code>sub</code>, <code>email</code>, <code>role</code> claims)</li>
+  <li>BCrypt password hashing (10 salt rounds)</li>
+  <li>Role-Based Access Control via <code>RolesGuard</code> with <code>@Roles()</code> decorators</li>
+  <li>Audit logging for all financial and administrative actions</li>
+</ul>
+
+<h3>10.7 API Documentation</h3>
+<p>Swagger/OpenAPI documentation is auto-generated via <code>@nestjs/swagger</code> and accessible at the <code>/api</code> endpoint.</p>
+
+<!-- ============ TESTING AND RESULTS ============ -->
+<h2>11. Testing and Results</h2>
+
+<h3>11.1 Testing Strategy</h3>
+<p>
+Testing covered multiple levels: <strong>Unit tests</strong> (Jest verifying controllers, services, and providers are instantiated), <strong>API/integration tests</strong> (NestJS testing module with Supertest against the application module), and <strong>frontend tests</strong> (Flutter widget and unit tests for models and services).
+</p>
+
+<h3>11.2 Test Results</h3>
+<table>
+  <tr><th>Test Suite</th><th>Test File</th><th>Status</th></tr>
+  <tr><td>App Controller</td><td>app.controller.spec.ts</td><td>✅ Passed</td></tr>
+  <tr><td>Auth Controller</td><td>auth.controller.spec.ts</td><td>✅ Passed</td></tr>
+  <tr><td>Auth Service</td><td>auth.service.spec.ts</td><td>✅ Passed</td></tr>
+  <tr><td>Users Controller</td><td>users.controller.spec.ts</td><td>✅ Passed</td></tr>
+  <tr><td>Users Service</td><td>users.service.spec.ts</td><td>✅ Passed</td></tr>
+  <tr><td>Prisma Service</td><td>prisma.service.spec.ts</td><td>✅ Passed</td></tr>
+  <tr><td>Frontend Tests</td><td>flutter_test (widget tests)</td><td>✅ Passed</td></tr>
+</table>
+
+<h3>11.3 Functional Testing Verification</h3>
+<p>The following key scenarios were tested and verified:</p>
+<table>
+  <tr><th>Test Case</th><th>Expected Result</th><th>Actual</th></tr>
+  <tr><td>User Registration</td><td>User created, 201 response</td><td>✅ Passed</td></tr>
+  <tr><td>User Login</td><td>JWT token returned</td><td>✅ Passed</td></tr>
+  <tr><td>Duplicate Email Registration</td><td>400 BadRequest</td><td>✅ Passed</td></tr>
+  <tr><td>Invalid Login</td><td>401 Unauthorized</td><td>✅ Passed</td></tr>
+  <tr><td>Deposit to Active Account</td><td>Balance increased, transaction recorded</td><td>✅ Passed</td></tr>
+  <tr><td>Withdraw with Sufficient Balance</td><td>Balance decreased, transaction recorded</td><td>✅ Passed</td></tr>
+  <tr><td>Withdraw with Insufficient Balance</td><td>400 BadRequest</td><td>✅ Passed</td></tr>
+  <tr><td>Transfer Between Accounts</td><td>Debit + Credit transactions, balances updated</td><td>✅ Passed</td></tr>
+  <tr><td>Transfer to Same Account</td><td>400 BadRequest</td><td>✅ Passed</td></tr>
+  <tr><td>Freeze / Activate Account</td><td>Status toggled FROZEN / ACTIVE</td><td>✅ Passed</td></tr>
+  <tr><td>Close Account with Zero Balance</td><td>Status changed to CLOSED</td><td>✅ Passed</td></tr>
+  <tr><td>Close Account with Balance &gt; 0</td><td>400 BadRequest</td><td>✅ Passed</td></tr>
+  <tr><td>Account Statement Generation</td><td>List of transactions with current balance</td><td>✅ Passed</td></tr>
+  <tr><td>Unauthenticated API Access</td><td>401 Unauthorized</td><td>✅ Passed</td></tr>
+  <tr><td>Unauthorized Role Access</td><td>403 Forbidden</td><td>✅ Passed</td></tr>
+</table>
+
+<h3>11.4 Bug Fixes</h3>
+<ul>
+  <li><strong>Account number collision:</strong> Generation updated to use a database sequence counter to prevent duplicates under high concurrency.</li>
+  <li><strong>Transfer reference conflicts:</strong> Added -OUT/-IN suffix convention to debit and credit reference uniqueness.</li>
+  <li><strong>Missing input validation:</strong> Added string length limits and regex patterns for account numbers.</li>
+  <li><strong>Decimal precision:</strong> Monetary values validated with <code>@IsDecimal({ decimal_digits: '0,2' })</code>.</li>
+</ul>
+
+<!-- ============ CHALLENGES ENCOUNTERED ============ -->
+<h2>12. Challenges Encountered</h2>
+
+<p>The following challenges were encountered during development:</p>
+<table>
+  <tr><th>#</th><th>Challenge</th><th>Resolution</th></tr>
+  <tr><td>1</td><td><strong>Database Transaction Management</strong> — Ensuring atomicity for multi-write financial operations (transfers create two transactions, a transfer record, and update two balances).</td><td>Used <code>prisma.$transaction()</code> so all operations roll back together on any failure.</td></tr>
+  <tr><td>2</td><td><strong>Account Number Uniqueness</strong> — Generating unique 12-character account numbers under concurrent load.</td><td>Counter-based generation (<code>WH&lt;YY&gt;&lt;9-digit&gt;</code>) with database unique constraints as a safety net.</td></tr>
+  <tr><td>3</td><td><strong>Cross-Platform UI Consistency</strong> — Rendering consistently across Android, iOS, web, and desktop.</td><td>Responsive <code>LayoutBuilder</code> patterns switching between mobile (centered card) and desktop (split-pane) views; tested on multiple devices.</td></tr>
+  <tr><td>4</td><td><strong>RBAC Complexity</strong> — Implementing fine-grained access control across five roles and many endpoints.</td><td>Reusable <code>RolesGuard</code> reading <code>@Roles()</code> metadata; each endpoint explicitly declares its roles.</td></tr>
+  <tr><td>5</td><td><strong>State Management in Flutter</strong> — Sharing session and account state across screens without prop drilling.</td><td><code>UserStore</code>/<code>AdminStore</code> singletons with SharedPreferences persistence and computed properties.</td></tr>
+  <tr><td>6</td><td><strong>Transaction Reversal</strong> — Safe reversal without ledger support.</td><td>Stub throwing a clear error documenting the ledger prerequisite, preventing data corruption.</td></tr>
+  <tr><td>7</td><td><strong>Frontend-Backend Integration</strong> — Connecting Flutter to NestJS with proper error handling.</td><td>Centralized <code>ApiService</code> for HTTP calls, error parsing, and loading states.</td></tr>
+</table>
+
+<!-- ============ LESSONS LEARNED ============ -->
+<h2>13. Lessons Learned</h2>
+
+<p>The project provided valuable learning experiences:</p>
+<ol>
+  <li><strong>Financial Software Requires Defensive Design:</strong> Every edge case — insufficient funds, duplicate transactions, concurrent access, network failures — must be handled gracefully. Database transactions, multi-layer input validation, and audit logging proved essential.</li>
+  <li><strong>ORM Selection Matters:</strong> Prisma's type-safe query builder dramatically reduced database bugs compared to raw SQL. Defining the schema once and generating types, migrations, and the client library streamlined development.</li>
+  <li><strong>Frontend State Management Strategy:</strong> Choosing a state management approach early is critical. The <code>UserStore</code>/<code>AdminStore</code> singleton pattern suited the project's scope, but a formal solution (Riverpod/BLoC) would be needed as it grows.</li>
+  <li><strong>API-First Development Pays Off:</strong> Defining API contracts before implementation reduced integration friction; Swagger/OpenAPI documented them accurately.</li>
+  <li><strong>Testing Financial Logic Requires Careful Planning:</strong> Unit tests alone are insufficient. Integration tests verifying transactional integrity, concurrency, and multi-step workflows (deposit → transfer → withdrawal → statement) are essential.</li>
+  <li><strong>RBAC Must Be Explicit:</strong> Every endpoint should clearly declare which roles can access it, rather than relying on implicit permissions.</li>
+  <li><strong>Cross-Platform Development Requires Platform-Specific Testing:</strong> Platform-specific behavior (keyboards, navigation, text rendering) required device-specific testing regardless of Flutter's cross-platform promise.</li>
+</ol>
+
+<!-- ============ FUTURE IMPROVEMENTS ============ -->
+<h2>14. Future Improvements</h2>
+
+<p>The following enhancements are planned for future iterations of the Wantam Holdings Banking Management System:</p>
+
+<table>
+  <tr><th>#</th><th>Improvement</th><th>Priority</th><th>Description</th></tr>
+  <tr><td>1</td><td><strong>Ledger-Based Accounting</strong></td><td>High</td><td>Implement a double-entry ledger system where every transaction credits one account and debits another. This would enable proper transaction reversal and improve financial auditability. The current reversal stub explicitly awaits this feature.</td></tr>
+  <tr><td>2</td><td><strong>USSD Banking Integration</strong></td><td>High</td><td>Implement the USSD banking module with carrier integration to allow customers without internet access to perform basic banking operations via feature phones.</td></tr>
+  <tr><td>3</td><td><strong>Real-Time Notifications</strong></td><td>Medium</td><td>Integrate push notifications (Firebase Cloud Messaging) and email alerts for transaction confirmations, account status changes, and security alerts.</td></tr>
+  <tr><td>4</td><td><strong>Comprehensive Test Coverage</strong></td><td>Medium</td><td>Expand test coverage to include integration tests for all service methods, load tests for concurrent transaction processing, and end-to-end tests simulating complete banking workflows.</td></tr>
+  <tr><td>5</td><td><strong>Multi-Currency Support</strong></td><td>Medium</td><td>Extend the system to support multiple currencies with real-time exchange rate integration, enabling international transfers and foreign currency accounts.</td></tr>
+  <tr><td>6</td><td><strong>Advanced Reporting and Analytics</strong></td><td>Medium</td><td>Develop a comprehensive reporting dashboard with visualizations (charts, graphs) for transaction trends, customer growth, revenue analysis, and risk assessment.</td></tr>
+  <tr><td>7</td><td><strong>Biometric Authentication</strong></td><td>Low</td><td>Integrate fingerprint and facial recognition authentication on mobile devices for enhanced security and user convenience.</td></tr>
+  <tr><td>8</td><td><strong>CI/CD Pipeline</strong></td><td>Low</td><td>Set up automated testing, linting, and deployment pipelines using GitHub Actions to ensure code quality and streamline releases.</td></tr>
+  <tr><td>9</td><td><strong>Containerization with Docker</strong></td><td>Low</td><td>Containerize the backend application with Docker for consistent deployment across development, staging, and production environments.</td></tr>
+</table>
+
+<!-- ============ REFERENCES ============ -->
+<h2>15. References</h2>
+
+<p>The following resources, frameworks, libraries, and tools were used in the development of this project:</p>
+
+<h3>15.1 Frameworks and Libraries</h3>
+<ul>
+  <li>NestJS — A progressive Node.js framework for building efficient and scalable server-side applications. <a href="https://nestjs.com/">https://nestjs.com/</a></li>
+  <li>Flutter — Google's UI toolkit for building natively compiled applications from a single codebase. <a href="https://flutter.dev/">https://flutter.dev/</a></li>
+  <li>Dart — Client-optimized programming language for fast apps on multiple platforms. <a href="https://dart.dev/">https://dart.dev/</a></li>
+  <li>Prisma ORM — Next-generation Node.js and TypeScript ORM. <a href="https://www.prisma.io/">https://www.prisma.io/</a></li>
+  <li>PostgreSQL — Advanced open-source relational database. <a href="https://www.postgresql.org/">https://www.postgresql.org/</a></li>
+  <li>Passport.js — Simple, unobtrusive authentication for Node.js. <a href="https://www.passportjs.org/">https://www.passportjs.org/</a></li>
+  <li>BCrypt — A password-hashing function. <a href="https://github.com/kelektiv/node.bcrypt.js">https://github.com/kelektiv/node.bcrypt.js</a></li>
+  <li>Swagger/OpenAPI — API documentation standard and tooling. <a href="https://swagger.io/">https://swagger.io/</a></li>
+  <li>Material Design 3 — Google's design system. <a href="https://m3.material.io/">https://m3.material.io/</a></li>
+  <li>Google Fonts (Poppins) — Font library for Flutter. <a href="https://fonts.google.com/">https://fonts.google.com/</a></li>
+  <li>SharedPreferences — Flutter plugin for persistent key-value storage. <a href="https://pub.dev/packages/shared_preferences">https://pub.dev/packages/shared_preferences</a></li>
+  <li>HTTP — A composable, multi-platform HTTP client for Dart. <a href="https://pub.dev/packages/http">https://pub.dev/packages/http</a></li>
+</ul>
+
+<h3>15.2 Development Tools</h3>
+<ul>
+  <li>Visual Studio Code — Source code editor. <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></li>
+  <li>Android Studio — IDE for Android and Flutter development. <a href="https://developer.android.com/studio">https://developer.android.com/studio</a></li>
+  <li>Postman — API development and testing platform. <a href="https://www.postman.com/">https://www.postman.com/</a></li>
+  <li>Git — Distributed version control system. <a href="https://git-scm.com/">https://git-scm.com/</a></li>
+  <li>GitHub — Code hosting and collaboration platform. <a href="https://github.com/">https://github.com/</a></li>
+</ul>
+
+<h3>15.3 Documentation and Learning Resources</h3>
+<ul>
+  <li>NestJS Documentation — <a href="https://docs.nestjs.com/">https://docs.nestjs.com/</a></li>
+  <li>Flutter Documentation — <a href="https://docs.flutter.dev/">https://docs.flutter.dev/</a></li>
+  <li>Dart Documentation — <a href="https://dart.dev/guides">https://dart.dev/guides</a></li>
+  <li>Prisma Documentation — <a href="https://www.prisma.io/docs">https://www.prisma.io/docs</a></li>
+  <li>PostgreSQL Documentation — <a href="https://www.postgresql.org/docs/">https://www.postgresql.org/docs/</a></li>
+</ul>
+
+<h3>15.4 AI-Assisted Development</h3>
+<p>
+Portions of the codebase were developed with assistance from AI coding tools (including GitHub Copilot and OpenCode) to accelerate development, generate boilerplate code, and assist with debugging. All AI-generated code was reviewed, tested, and validated to ensure correctness, security, and adherence to the project's coding standards. The core architectural decisions, business logic, security implementations, and testing strategies were designed and implemented by the development team.
+</p>
+
+<h3>15.5 GitHub Repository</h3>
+<p>
+The complete source code for this project is available at:
+</p>
+<p><strong>https://github.com/rayv7/wantamHoldings</strong></p>
+
+</body>
+</html>

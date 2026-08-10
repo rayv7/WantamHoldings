@@ -51,6 +51,7 @@ export class TransactionController {
     RoleType.ADMIN,
     RoleType.MANAGER,
     RoleType.TELLER,
+    RoleType.CUSTOMER,
   )
   @Post('deposit')
   @ApiOperation({
@@ -76,6 +77,7 @@ export class TransactionController {
     RoleType.ADMIN,
     RoleType.MANAGER,
     RoleType.TELLER,
+    RoleType.CUSTOMER,
   )
   @Post('withdraw')
   @ApiOperation({

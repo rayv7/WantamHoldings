@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../core/admin_store.dart';
 import '../core/routes.dart';
 import '../core/user_store.dart';
+import '../services/api_service.dart';
 import '../widgets/set_password_dialog.dart';
 
 class LoginCard extends StatefulWidget {
@@ -242,11 +243,13 @@ class _LoginCardState extends State<LoginCard> {
                               if (result == true) {
                                 if (!context.mounted) return;
                                 _fillUserStore(account);
+                                _tryBackendAuth(email, password);
                                 Routes.pushToDashboard(context);
                               }
                             } else if (AdminStore.verifyPassword(
                                 account.phone, password)) {
                               _fillUserStore(account);
+                              _tryBackendAuth(email, password);
                               Routes.pushToDashboard(context);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -375,6 +378,15 @@ class _LoginCardState extends State<LoginCard> {
         ),
       ),
     );
+  }
+
+  void _tryBackendAuth(String email, String password) {
+    ApiService().login(email: email, password: password).then((data) {
+      final token = data['accessToken'] as String?;
+      if (token != null) {
+        ApiService.setToken(token);
+      }
+    }).catchError((_) {});
   }
 
   void _fillUserStore(AdminAccount account) {
