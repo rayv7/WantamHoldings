@@ -4,6 +4,7 @@ import {
   IsString,
   MinLength,
   IsNotEmpty,
+  IsPhoneNumber,
 } from 'class-validator';
 
 export class RegisterDto {
@@ -30,4 +31,43 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   roleId!: string;
+
+  @ApiProperty({
+    example: 'Enoch',
+    description: 'Customer first name.',
+  })
+  @IsString()
+  @IsNotEmpty()
+  firstName!: string;
+
+  @ApiProperty({
+    example: 'Robert',
+    description: 'Customer middle name.',
+    required: false,
+  })
+  @IsString()
+  middleName?: string;
+
+  @ApiProperty({
+    example: 'Obutu',
+    description: 'Customer last name.',
+  })
+  @IsString()
+  @IsNotEmpty()
+  lastName!: string;
+
+  @ApiProperty({
+    example: '12345678',
+    description: 'Customer national ID number.',
+  })
+  @IsString()
+  @IsNotEmpty()
+  nationalId!: string;
+
+  @ApiProperty({
+    example: '+254712345678',
+    description: 'Customer phone number used for USSD identification.',
+  })
+  @IsPhoneNumber('KE')
+  phone!: string;
 }

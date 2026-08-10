@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { CustomerModule } from './customer/customer.module';
 import { AccountModule } from './account/account.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { UssdModule } from './ussd/ussd.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TransactionModule } from './transaction/transaction.module';
     CustomerModule,
     AccountModule,
     TransactionModule,
+    UssdModule,
   ],
 
   controllers: [AppController],

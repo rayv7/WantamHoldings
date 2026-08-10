@@ -28,50 +28,103 @@ export class AuthService {
   |--------------------------------------------------------------------------
   */
 
-  async register(dto: RegisterDto) {
-    const existingUser =
-      await this.prisma.user.findUnique({
-        where: {
-          email: dto.email,
-        },
-      });
-
-    if (existingUser) {
-      throw new BadRequestException(
-        'Email already exists.',
-      );
-    }
-
-    const hashedPassword =
-      await bcrypt.hash(dto.password, 10);
-
-    const user =
-      await this.prisma.user.create({
-        data: {
-          email: dto.email,
-          password: hashedPassword,
-          roleId: dto.roleId,
-        },
-
-        include: {
-          role: true,
-        },
-      });
-
-    return {
-      success: true,
-
-      message:
-        'User registered successfully.',
-
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role.name,
-        createdAt: user.createdAt,
+ async register(dto: RegisterDto) {
+  const existingUser =
+    await this.prisma.user.findUnique({
+      where: {
+        email: dto.email,
       },
-    };
+    });
+
+  if (existingUser) {
+    throw new BadRequestException(
+      'Email already exists.',
+    );
   }
+
+  const existingCustomer =
+    await this.prisma.customer.findFirst({
+      where: {
+        OR: [
+          {
+            phone: dto.phone,
+          },
+          {
+            nationalId: dto.nationalId,
+          },
+        ],
+      },
+    });
+
+  if (existingCustomer) {
+    throw new BadRequestException(
+      'Phone number or National ID already exists.',
+    );
+  }
+
+  const role =
+    await this.prisma.role.findUnique({
+      where: {
+        id: dto.roleId,
+      },
+    });
+
+  if (!role) {
+    throw new BadRequestException(
+      'Invalid role ID.',
+    );
+  }
+
+  const hashedPassword =
+    await bcrypt.hash(dto.password, 10);
+
+  const user =
+    await this.prisma.user.create({
+      data: {
+        email: dto.email,
+        password: hashedPassword,
+        roleId: dto.roleId,
+
+        customer: {
+          create: {
+            firstName: dto.firstName,
+            middleName: dto.middleName,
+            lastName: dto.lastName,
+            nationalId: dto.nationalId,
+            phone: dto.phone,
+          },
+        },
+      },
+
+      include: {
+        role: true,
+        customer: true,
+      },
+    });
+
+  return {
+    success: true,
+
+    message:
+      'User and customer registered successfully.',
+
+    user: {
+      id: user.id,
+      email: user.email,
+      role: user.role.name,
+      createdAt: user.createdAt,
+    },
+
+    customer: {
+      id: user.customer?.id,
+      firstName: user.customer?.firstName,
+      middleName: user.customer?.middleName,
+      lastName: user.customer?.lastName,
+      nationalId: user.customer?.nationalId,
+      phone: user.customer?.phone,
+    },
+  };
+}
 
   /*
   |--------------------------------------------------------------------------
